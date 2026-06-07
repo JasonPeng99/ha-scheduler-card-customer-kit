@@ -133,7 +133,7 @@ var se,ae;class oe extends f{constructor(){super(...arguments),this.renderOption
               slot="meta"
               @click=${e=>e.stopPropagation()}
               @change=${this._toggleSelectEntity}
-              ?checked=${(null===(t=this._params)||void 0===t?void 0:t.entities.includes(e.key))||(null===(i=this._params)||void 0===i?void 0:i.domains.includes(o))}
+              .checked=${(null===(t=this._params)||void 0===t?void 0:t.entities.includes(e.key))||(null===(i=this._params)||void 0===i?void 0:i.domains.includes(o))}
             ></ha-checkbox>
 
             <span>${e.name}</span>
