@@ -131,6 +131,7 @@ var se,ae;class oe extends f{constructor(){super(...arguments),this.renderOption
             ${Object.keys(this.hass.states).includes(e.key)?q`<ha-state-icon .stateObj=${this.hass.states[e.key]} .hass=${this.hass} slot="graphic"></ha-state-icon>`:q`<ha-icon slot="graphic" icon="${e.icon}"></ha-icon>`}
             <ha-checkbox
               slot="meta"
+              @change=${this._toggleSelectEntity}
               ?checked=${(null===(t=this._params)||void 0===t?void 0:t.entities.includes(e.key))||(null===(i=this._params)||void 0===i?void 0:i.domains.includes(o))}
             ></ha-checkbox>
 
