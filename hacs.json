@@ -1,0 +1,6 @@
+{
+  "name": "GS Scheduler Card",
+  "render_readme": true,
+  "content_in_root": true,
+  "filename": "gs-scheduler-card.js"
+}

@@ -1,33 +1,48 @@
-# HA Scheduler Card Customer Kit
+# GS Scheduler Card
 
-This repo contains a reusable patched `scheduler-card` bundle for Home Assistant customer deployments.
+This repo contains a reusable Home Assistant frontend plugin derived from `scheduler-card`, but renamed and packaged as a separate custom card so it can be maintained independently from the upstream HACS `scheduler-card`.
 
 ## Included customizations
 
 - Traditional Chinese UI patching
 - Strong selected-timeslot highlight color
 - Action row shows selected script name instead of icon-only display
-- Compatible with the current HACS `scheduler-card` resource path:
-  - `/hacsfiles/scheduler-card/scheduler-card.js?...`
+- Designed to coexist with the original HACS `scheduler-card`
 
 ## Files
 
 - `assets/scheduler-card.js`
-  - Current patched frontend bundle
-- `scripts/apply_to_home_assistant.py`
-  - Copies the patched bundle into Home Assistant
-  - Rebuilds `scheduler-card.js.gz`
-  - Bumps the Lovelace resource version string
+  - Current validated source bundle used to build the independent plugin
+- `scripts/build_independent_bundle.py`
+  - Rewrites internal custom element tags and card type to `gs-*`
+- `gs-scheduler-card.js`
+  - Final HACS-installable frontend plugin bundle
+- `hacs.json`
+  - HACS metadata for a standalone dashboard plugin
 
-## Apply on Home Assistant
+## Build
 
-Run this on the Home Assistant host filesystem where `/homeassistant` is the config root:
+Run this locally after updating `assets/scheduler-card.js`:
 
 ```bash
-python3 scripts/apply_to_home_assistant.py /homeassistant
+python3 scripts/build_independent_bundle.py
 ```
 
-Then refresh the frontend with:
+## Install with HACS
+
+1. Add this repository as a custom repository in HACS
+2. Repository type: `Dashboard`
+3. Install `GS Scheduler Card`
+4. Reload Home Assistant frontend
+5. Add card with:
+
+```yaml
+type: custom:gs-scheduler-card
+```
+
+## Refresh frontend
+
+After install or update:
 
 ```text
 Ctrl + Shift + R
@@ -37,6 +52,7 @@ If the page still looks unchanged, fully close and reopen the browser tab.
 
 ## Notes
 
-- This is a direct frontend patch of the installed `scheduler-card` bundle.
-- HACS updates may overwrite the patched file.
-- If HACS updates `scheduler-card`, re-run the apply script.
+- This plugin is meant to be maintained separately from the original HACS `scheduler-card`
+- Upstream scheduler-card changes are not automatically inherited
+- When you want to import new upstream fixes, update `assets/scheduler-card.js` and rebuild `gs-scheduler-card.js`
+- This plugin coexists with the original card because all custom elements and the Lovelace card type are renamed to the `gs-` prefix
