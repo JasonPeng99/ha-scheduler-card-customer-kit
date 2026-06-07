@@ -2044,7 +2044,7 @@ var se,ae;class oe extends f{constructor(){super(...arguments),this.renderOption
           ${Fi("ui.panel.editor.add_action",this.hass)}
         </ha-button>
       </div>
-    `;const n=ns(o,this.config.customize),r=(null===(e=n.target)||void 0===e?void 0:e.domain)||Wi(o.service),d=Be(null===(t=null==n?void 0:n.target)||void 0===t?void 0:t.entity_id)||this.schedule.entries[this.selectedEntry].slots.some(e=>{var t,i;return e.actions.length&&Be(null===(i=null===(t=ns(e.actions[0],this.config.customize))||void 0===t?void 0:t.target)||void 0===i?void 0:i.entity_id)});if(void 0===n)return q``;const l=Object.keys(n.fields||{}).filter(e=>_a(o,e,this.hass,this.config.customize));let c="",u=[(null===(i=o.target)||void 0===i?void 0:i.entity_id)||[]].flat();return!u.length&&"notify"===r&&(u=[o.service]),u.length&&(c+=u.map(e=>Os(e,this.hass,this.config.customize)).join(", "),"script"!==r&&(c+=": ")),c+="script"===r?Os(o.service,this.hass,this.config.customize):fs(o,this.hass,this.config.customize,!1,!0),q`
+    `;const n=ns(o,this.config.customize),r=(null===(e=n.target)||void 0===e?void 0:e.domain)||Wi(o.service),d=Be(null===(t=null==n?void 0:n.target)||void 0===t?void 0:t.entity_id)||this.schedule.entries[this.selectedEntry].slots.some(e=>{var t,i;return e.actions.length&&Be(null===(i=null===(t=ns(e.actions[0],this.config.customize))||void 0===t?void 0:t.target)||void 0===i?void 0:i.entity_id)});if(void 0===n)return q``;const l=Object.keys(n.fields||{}).filter(e=>_a(o,e,this.hass,this.config.customize));let c="";return c+="script"===r?Os(o.service,this.hass,this.config.customize):fs(o,this.hass,this.config.customize,!1,!0),q`
       <scheduler-collapsible-section
         ?expanded=${!0}
         ?disabled=${!0}
