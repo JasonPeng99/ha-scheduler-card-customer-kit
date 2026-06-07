@@ -1,0 +1,67 @@
+template:
+  - sensor:
+      - name: fan_schedule_current_slot
+        state: >-
+          {% set slot = state_attr('switch.schedule_feng_shan_pai_cheng', 'current_slot') %}
+          {% set slots = state_attr('switch.schedule_feng_shan_pai_cheng', 'timeslots') or [] %}
+          {% if not is_state('switch.schedule_feng_shan_pai_cheng', 'on') %}
+            排程已關閉
+          {% elif slot is none or (slots | count) <= slot %}
+            無進行中時段
+          {% else %}
+            {{ slots[slot] }}
+          {% endif %}
+
+      - name: fan_schedule_current_action
+        state: >-
+          {% set slot = state_attr('switch.schedule_feng_shan_pai_cheng', 'current_slot') %}
+          {% set acts = state_attr('switch.schedule_feng_shan_pai_cheng', 'actions') or [] %}
+          {% if not is_state('switch.schedule_feng_shan_pai_cheng', 'on') %}
+            排程已關閉
+          {% elif slot is none or (acts | count) <= slot %}
+            無動作
+          {% else %}
+            {% set svc = acts[slot].service %}
+            {% if svc == 'script.huang_xiang_xian_fans_day_on' %}
+              風扇群開啟
+            {% elif svc == 'script.huang_xiang_xian_fans_night_cycle_start' %}
+              風扇群循環模式
+            {% elif svc == 'script.huang_xiang_xian_fans_night_cycle_stop' %}
+              風扇群關閉
+            {% else %}
+              {{ svc }}
+            {% endif %}
+          {% endif %}
+
+      - name: mist_schedule_current_slot
+        state: >-
+          {% set slot = state_attr('switch.schedule_124686', 'current_slot') %}
+          {% set slots = state_attr('switch.schedule_124686', 'timeslots') or [] %}
+          {% if not is_state('switch.schedule_124686', 'on') %}
+            排程已關閉
+          {% elif slot is none or (slots | count) <= slot %}
+            無進行中時段
+          {% else %}
+            {{ slots[slot] }}
+          {% endif %}
+
+      - name: mist_schedule_current_action
+        state: >-
+          {% set slot = state_attr('switch.schedule_124686', 'current_slot') %}
+          {% set acts = state_attr('switch.schedule_124686', 'actions') or [] %}
+          {% if not is_state('switch.schedule_124686', 'on') %}
+            排程已關閉
+          {% elif slot is none or (acts | count) <= slot %}
+            無動作
+          {% else %}
+            {% set svc = acts[slot].service %}
+            {% if svc == 'script.huang_xiang_xian_mist_on' %}
+              噴霧開啟
+            {% elif svc == 'script.huang_xiang_xian_mist_cycle_start' %}
+              噴霧循環模式
+            {% elif svc == 'script.huang_xiang_xian_mist_off' %}
+              噴霧關閉
+            {% else %}
+              {{ svc }}
+            {% endif %}
+          {% endif %}

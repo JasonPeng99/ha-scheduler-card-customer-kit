@@ -1,0 +1,115 @@
+type: grid
+cards:
+  - type: heading
+    heading: 風扇排程
+    icon: mdi:fan-clock
+
+  - type: custom:gs-scheduler-card
+    title: 風扇群排程
+    discover_existing: false
+    tags: fan
+    show_header_toggle: false
+    time_step: 5
+    include:
+      - script.huang_xiang_xian_fans_day_on
+      - script.huang_xiang_xian_fans_night_cycle_stop
+      - script.huang_xiang_xian_fans_night_cycle_start
+    display_options:
+      primary_info:
+        - "{name}"
+      secondary_info:
+        - time
+      icon: action
+    customize:
+      script.huang_xiang_xian_fans_day_on:
+        name: 風扇群開啟
+        icon: mdi:fan
+      script.huang_xiang_xian_fans_night_cycle_stop:
+        name: 風扇群關閉
+        icon: mdi:fan-off
+      script.huang_xiang_xian_fans_night_cycle_start:
+        name: 風扇群循環模式
+        icon: mdi:autorenew
+
+  - type: entities
+    title: 風扇排程目前狀態
+    show_header_toggle: false
+    entities:
+      - entity: sensor.fan_schedule_current_slot
+        name: 目前時段
+        icon: mdi:clock-time-eight
+      - entity: sensor.fan_schedule_current_action
+        name: 動作
+
+  - type: markdown
+    title: 風扇排程總攬
+    entity_id:
+      - switch.schedule_feng_shan_pai_cheng
+    content: >-
+      {% set times = state_attr('switch.schedule_feng_shan_pai_cheng', 'timeslots') or [] %}
+      {% set acts = state_attr('switch.schedule_feng_shan_pai_cheng', 'actions') or [] %}
+      {% set current = state_attr('switch.schedule_feng_shan_pai_cheng', 'current_slot') %}
+      {% if times | count == 0 %}
+      無排程資料
+      {% else %}
+      | 狀態 | 時段 | 動作 |
+      |---|---|---|
+      {% for i in range(times | count) %}{% set svc = acts[i].service if acts | count > i else '' %}{% set parts = times[i].split(' - ') %}{% set short = parts[0][:5] ~ ' - ' ~ parts[1][:5] if parts | count > 1 else times[i] %}{% set action = '風扇群開啟' if svc == 'script.huang_xiang_xian_fans_day_on' else '風扇群循環模式' if svc == 'script.huang_xiang_xian_fans_night_cycle_start' else '風扇群關閉' if svc == 'script.huang_xiang_xian_fans_night_cycle_stop' else svc %}| {% if current == i %}👉 目前{% else %} {% endif %} | {% if current == i %}**{{ short }}**{% else %}{{ short }}{% endif %} | {% if current == i %}**{{ action }}**{% else %}{{ action }}{% endif %} |
+      {% endfor %}{% endif %}
+
+  - type: heading
+    heading: 噴霧排程
+    icon: mdi:spray
+
+  - type: custom:gs-scheduler-card
+    title: 噴霧排程
+    discover_existing: false
+    tags: mist
+    show_header_toggle: false
+    time_step: 5
+    include:
+      - script.huang_xiang_xian_mist_on
+      - script.huang_xiang_xian_mist_off
+      - script.huang_xiang_xian_mist_cycle_start
+    display_options:
+      primary_info:
+        - "{name}"
+      secondary_info:
+        - time
+      icon: action
+    customize:
+      script.huang_xiang_xian_mist_on:
+        name: 噴霧開啟
+        icon: mdi:spray
+      script.huang_xiang_xian_mist_off:
+        name: 噴霧關閉
+        icon: mdi:water-off
+      script.huang_xiang_xian_mist_cycle_start:
+        name: 噴霧循環模式
+        icon: mdi:autorenew
+
+  - type: entities
+    title: 噴霧排程目前狀態
+    show_header_toggle: false
+    entities:
+      - entity: sensor.mist_schedule_current_slot
+        name: 目前時段
+        icon: mdi:clock-time-eight
+      - entity: sensor.mist_schedule_current_action
+        name: 動作
+
+  - type: markdown
+    title: 噴霧排程總攬
+    entity_id:
+      - switch.schedule_124686
+    content: >-
+      {% set times = state_attr('switch.schedule_124686', 'timeslots') or [] %}
+      {% set acts = state_attr('switch.schedule_124686', 'actions') or [] %}
+      {% set current = state_attr('switch.schedule_124686', 'current_slot') %}
+      {% if times | count == 0 %}
+      無排程資料
+      {% else %}
+      | 狀態 | 時段 | 動作 |
+      |---|---|---|
+      {% for i in range(times | count) %}{% set svc = acts[i].service if acts | count > i else '' %}{% set parts = times[i].split(' - ') %}{% set short = parts[0][:5] ~ ' - ' ~ parts[1][:5] if parts | count > 1 else times[i] %}{% set action = '噴霧開啟' if svc == 'script.huang_xiang_xian_mist_on' else '噴霧循環模式' if svc == 'script.huang_xiang_xian_mist_cycle_start' else '噴霧關閉' if svc == 'script.huang_xiang_xian_mist_off' else svc %}| {% if current == i %}👉 目前{% else %} {% endif %} | {% if current == i %}**{{ short }}**{% else %}{{ short }}{% endif %} | {% if current == i %}**{{ action }}**{% else %}{{ action }}{% endif %} |
+      {% endfor %}{% endif %}

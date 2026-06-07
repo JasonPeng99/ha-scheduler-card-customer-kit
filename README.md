@@ -19,6 +19,10 @@ This repo contains a reusable Home Assistant frontend plugin derived from `sched
   - Final HACS-installable frontend plugin bundle
 - `hacs.json`
   - HACS metadata for a standalone dashboard plugin
+- `examples/farm_schedule_template_sensors.yaml`
+  - Reusable template sensors for current slot and current action
+- `examples/farm_schedule_cards.yaml`
+  - Reusable Lovelace cards for scheduler, current status, and full schedule summary
 
 ## Build
 
@@ -39,6 +43,23 @@ python3 scripts/build_independent_bundle.py
 ```yaml
 type: custom:gs-scheduler-card
 ```
+
+## Reuse the farm schedule UI on another host
+
+1. Install `GS Scheduler Card` from HACS
+2. Import the template sensors from:
+
+```text
+examples/farm_schedule_template_sensors.yaml
+```
+
+3. Copy the card examples from:
+
+```text
+examples/farm_schedule_cards.yaml
+```
+
+4. Replace the entity IDs, script IDs, and schedule switch IDs with the target site values
 
 ## Refresh frontend
 
