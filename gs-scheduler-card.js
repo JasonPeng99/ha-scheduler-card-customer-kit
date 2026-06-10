@@ -2056,6 +2056,7 @@ var se,ae;class oe extends f{constructor(){super(...arguments),this.renderOption
 
         <ha-dropdown
           slot="contextMenu" 
+          @click=${e=>e.stopPropagation()}
           @wa-select=${this._actionItemOptionsClick}
           @wa-after-hide=${e=>{e.target.firstElementChild.blur()}}
           placement="bottom-end"
