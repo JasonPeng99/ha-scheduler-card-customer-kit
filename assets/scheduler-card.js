@@ -493,7 +493,7 @@ var se,ae;class oe extends f{constructor(){super(...arguments),this.renderOption
     `},this._filteredItems=()=>{let e=Object.keys(this.hass.states);return this.domain&&(e=e.filter(e=>Wi(e)==this.domain)),this.multiple&&(e=e.filter(e=>{var t;return!(null===(t=this.value)||void 0===t?void 0:t.includes(e))})),this.config&&(e=e.filter(e=>((this.config.include||Ve).some(t=>Ki(t,e))||Object.keys(this.config.customize||{}).some(t=>Ki(t,e)))&&!(this.config.exclude||[]).some(t=>Ki(t,e)))),e=e.filter(e=>!this.scheduleEntities.includes(e)),this.filterFunc&&(e=e.filter(e=>this.filterFunc(this.hass.states[e]))),e.map(e=>this._parseEntityItem(e))}}async firstUpdated(){this.scheduleEntities=Object.entries(await Oe(this.hass)).map(([,e])=>e.entity_id),this.domain&&this.config&&!Gi(this.domain,this.config)&&(this.config=Object.assign(Object.assign({},this.config),{include:[...this.config.include||[],this.domain],exclude:[...(this.config.exclude||[]).filter(e=>!e.startsWith(this.domain))]})),this._autoSelectIfSingleEntity()}updated(e){super.updated(e),e.has("domain")&&this._autoSelectIfSingleEntity()}_autoSelectIfSingleEntity(){if(this.value&&this.value.length>0)return;const e=this._filteredItems();1===e.length&&(this.value=[e[0].id],Ts(this,"value-changed",{value:this.value}))}render(){var e,t;return q`
       ${this.renderChips()}
 
-      ${(null===(e=this.value)||void 0===e?void 0:e.length)&&!this.multipleMode&&this.multiple?V:q`
+      ${q`
 
       <ha-generic-picker
         .label=${(null===(t=this.value)||void 0===t?void 0:t.length)?"":Xi("ui.components.entity.entity-picker.choose_entity",this.hass)}
@@ -514,7 +514,7 @@ var se,ae;class oe extends f{constructor(){super(...arguments),this.renderOption
       </ha-generic-picker>
       `}
     `}renderChips(){if(!this.multiple)return V;let e=(this.value||[]).map(e=>{const t=this._parseEntityItem(e);return{name:t.primary,value:e,useStateIcon:!t.icon,icon:t.icon}});return q`
-      <div class="wrapper">
+      <div class="wrapper" @click=${()=>{if(!this.disabled&&this.multiple)this.multipleMode=!0}}>
       <scheduler-chip-set
         .hass=${this.hass}
         .items=${e}
@@ -524,13 +524,7 @@ var se,ae;class oe extends f{constructor(){super(...arguments),this.renderOption
       >
       </scheduler-chip-set>
       <div class="column-right">
-      ${e.length?q`
-      <ha-icon-button
-        @click=${e=>{this.multipleMode=!this.multipleMode,e.target.blur()}}
-        .path=${this.multipleMode?"M7.41,15.41L12,10.83L16.59,15.41L18,14L12,8L6,14L7.41,15.41Z":Ms}
-        slot="end"
-      ></ha-icon-button>
-      `:V}
+      
       </div>
       </div>
       `}_valueChanged(e){let t=e.detail.value;const i=e.currentTarget;t&&(this.value=[...this.value||[],t],this.multiple&&(i.value=""),Ts(this,"value-changed",{value:this.value}),e.stopPropagation())}_removeClick(e){const t=e.detail;this.value=(this.value||[]).filter(e=>e!==t),Ts(this,"value-changed",{value:this.value})}_parseEntityItem(e){var t,i,s,a;const o=Object.entries((null===(t=this.config)||void 0===t?void 0:t.customize)||{}).filter(([t,i])=>Ki(t,e)).map(([e,t])=>t),n=null===(i=o.find(e=>"name"in e))||void 0===i?void 0:i.name,r=null===(s=o.find(e=>"icon"in e))||void 0===s?void 0:s.icon;return{id:e,primary:n||Zi(e,null===(a=this.hass.states[e])||void 0===a?void 0:a.attributes),secondary:e,icon:r}}};da.styles=r`
@@ -1424,7 +1418,7 @@ var se,ae;class oe extends f{constructor(){super(...arguments),this.renderOption
           ${this.large?this._renderTimeMode():V}
         </div>
       </div>
-    `}_renderTimeMode(){if(!this.hass.states["sun.sun"])return V;if(this.large){const e=()=>{let e=this._convertTimeMode();e.mode!=be.Fixed&&(e=Ta(e)),this.mode=e.mode,this.hours=e.hours,this.minutes=e.minutes,this._valueChanged()};return q`
+    `}_renderTimeMode(){return V;if(!this.hass.states["sun.sun"])return V;if(this.large){const e=()=>{let e=this._convertTimeMode();e.mode!=be.Fixed&&(e=Ta(e)),this.mode=e.mode,this.hours=e.hours,this.minutes=e.minutes,this._valueChanged()};return q`
         <div class="mode">
           ${this.hass.states["sun.sun"]?q`
           <ha-button
@@ -1646,7 +1640,7 @@ var se,ae;class oe extends f{constructor(){super(...arguments),this.renderOption
         --wa-form-control-padding-inline: 10px;
       }
     }
-  `,t([le({attribute:!1})],Ea.prototype,"hass",void 0),t([ce()],Ea.prototype,"hours",void 0),t([ce()],Ea.prototype,"minutes",void 0),t([ce()],Ea.prototype,"mode",void 0),t([le({type:Boolean})],Ea.prototype,"autoValidate",void 0),t([le({type:Boolean})],Ea.prototype,"required",void 0),t([le({type:Boolean})],Ea.prototype,"disabled",void 0),t([le({type:String})],Ea.prototype,"label",void 0),t([le({type:Boolean})],Ea.prototype,"useAmPm",void 0),t([le({type:Boolean})],Ea.prototype,"large",void 0),t([le({attribute:!1})],Ea.prototype,"stepSize",void 0),Ea=t([re("scheduler-time-picker")],Ea);let Da=class extends oe{constructor(){super(...arguments),this.weekdayTypeCustomSelected=!1,this.selectedWeekdays=[]}async showDialog(e){this._params=e,await this.updateComplete,this.selectedWeekdays=this._params.weekdays.filter(e=>![pe.Daily,pe.Weekend,pe.Workday].includes(e)),this.weekdayTypeCustomSelected=this.selectedWeekdays.length>0&&this._params.weekdays.length==this.selectedWeekdays.length}async closeDialog(){this._params&&this._params.cancel(),this._params=void 0}render(){return this._params?q`
+  `,t([le({attribute:!1})],Ea.prototype,"hass",void 0),t([ce()],Ea.prototype,"hours",void 0),t([ce()],Ea.prototype,"minutes",void 0),t([ce()],Ea.prototype,"mode",void 0),t([le({type:Boolean})],Ea.prototype,"autoValidate",void 0),t([le({type:Boolean})],Ea.prototype,"required",void 0),t([le({type:Boolean})],Ea.prototype,"disabled",void 0),t([le({type:String})],Ea.prototype,"label",void 0),t([le({type:Boolean})],Ea.prototype,"useAmPm",void 0),t([le({type:Boolean})],Ea.prototype,"large",void 0),t([le({attribute:!1})],Ea.prototype,"stepSize",void 0),Ea=t([re("scheduler-time-picker")],Ea);let Da=class extends oe{constructor(){super(...arguments),this.weekdayTypeCustomSelected=!1,this.selectedWeekdays=[]}async showDialog(e){this._params=e,await this.updateComplete,this.selectedWeekdays=this._params.weekdays.filter(e=>e!==pe.Daily),this.weekdayTypeCustomSelected=this.selectedWeekdays.length>0&&this._params.weekdays.length==this.selectedWeekdays.length}async closeDialog(){this._params&&this._params.cancel(),this._params=void 0}render(){return this._params?q`
       <ha-dialog
         open
         @closed=${this.closeDialog}
@@ -1698,7 +1692,7 @@ var se,ae;class oe extends f{constructor(){super(...arguments),this.renderOption
           </ha-button>
         </ha-dialog-footer>
       </ha-dialog>
-    `:q``}_renderWeekdayOptions(){let e=[];if(this.weekdayTypeCustomSelected){e=[pe.Sunday,pe.Monday,pe.Tuesday,pe.Wednesday,pe.Thursday,pe.Friday,pe.Saturday];e=((e,t)=>e.concat(e).slice(t,t+e.length))(e,xs(this.hass))}else e=[pe.Daily,pe.Workday,pe.Weekend,"Custom"];const t=e=>{var t,i;return"Custom"==e?null===(t=this._params)||void 0===t?void 0:t.weekdays.some(e=>![pe.Daily,pe.Weekend,pe.Workday].includes(e)):null===(i=this._params)||void 0===i?void 0:i.weekdays.includes(e)};return e.map(e=>q`
+    `:q``}_renderWeekdayOptions(){let e=[];if(this.weekdayTypeCustomSelected){e=[pe.Sunday,pe.Monday,pe.Tuesday,pe.Wednesday,pe.Thursday,pe.Friday,pe.Saturday];e=((e,t)=>e.concat(e).slice(t,t+e.length))(e,xs(this.hass))}else e=[pe.Daily,"Custom"];const t=e=>{var t,i;return"Custom"==e?null===(t=this._params)||void 0===t?void 0:t.weekdays.some(e=>e!==pe.Daily):null===(i=this._params)||void 0===i?void 0:i.weekdays.includes(e)};return e.map(e=>q`
         <ha-list-item
           graphic="icon"
           @click=${this._toggleSelectOption}
@@ -1713,7 +1707,7 @@ var se,ae;class oe extends f{constructor(){super(...arguments),this.renderOption
 
           ${"Custom"==e?q`<ha-icon slot="meta" icon="mdi:chevron-right"></ha-icon>`:""}
         </ha-list-item>
-    `)}_toggleSelectOption(e){const t=e.target.getAttribute("option");let i=[...this._params.weekdays];"Custom"==t?(i=this.selectedWeekdays,this.weekdayTypeCustomSelected=!0):[pe.Daily,pe.Weekend,pe.Workday].includes(t)?(i.includes(t)?i.length>1&&(i=i.filter(e=>e!=t)):i=[t],this.weekdayTypeCustomSelected=!1):i=i.includes(t)?i.filter(e=>e!=t):[...i,t],this._params=Object.assign(this._params,{weekdays:i}),e.target.blur(),this.requestUpdate()}confirmClick(){const e=Array.from(new Set(this._params.weekdays));this._params.confirm(e)}cancelClick(){this._params.cancel()}backClick(){this.weekdayTypeCustomSelected=!1,this.selectedWeekdays=this._params.weekdays.filter(e=>![pe.Daily,pe.Weekend,pe.Workday].includes(e))}static get styles(){return r`
+    `)}_toggleSelectOption(e){const t=e.target.getAttribute("option");let i=[...this._params.weekdays];"Custom"==t?(i=this.selectedWeekdays,this.weekdayTypeCustomSelected=!0):t===pe.Daily?(i.includes(t)?i.length>1&&(i=i.filter(e=>e!=t)):i=[t],this.weekdayTypeCustomSelected=!1):i=i.includes(t)?i.filter(e=>e!=t):[...i,t],this._params=Object.assign(this._params,{weekdays:i}),e.target.blur(),this.requestUpdate()}confirmClick(){const e=Array.from(new Set(this._params.weekdays));this._params.confirm(e)}cancelClick(){this._params.cancel()}backClick(){this.weekdayTypeCustomSelected=!1,this.selectedWeekdays=this._params.weekdays.filter(e=>e!==pe.Daily)}static get styles(){return r`
       div.wrapper {
         color: var(--primary-text-color);
         padding: 0px 12px;
@@ -2024,7 +2018,7 @@ var se,ae;class oe extends f{constructor(){super(...arguments),this.renderOption
             .hass=${this.hass}
             .time=${this.schedule.entries[this.selectedEntry].slots[this.selectedSlot].start}
             @value-changed=${this._startTimeChanged}
-            ?useAmPm=${De(this.hass.locale)}
+            ?useAmPm=${!1}
             .stepSize=${this.config.time_step||15}
             large
           >
@@ -2058,7 +2052,7 @@ var se,ae;class oe extends f{constructor(){super(...arguments),this.renderOption
             ?disabled=${0==this.selectedSlot}
             .time=${e.start}
             @value-changed=${this._startTimeChanged}
-            ?useAmPm=${De(this.hass.locale)}
+            ?useAmPm=${!1}
           >
           </scheduler-time-picker>
         </div>
@@ -2069,7 +2063,7 @@ var se,ae;class oe extends f{constructor(){super(...arguments),this.renderOption
             ?disabled=${t}
             .time=${i}
             @value-changed=${this._stopTimeChanged}
-            ?useAmPm=${De(this.hass.locale)}
+            ?useAmPm=${!1}
           >
           </scheduler-time-picker>
         </div>
@@ -2097,23 +2091,7 @@ var se,ae;class oe extends f{constructor(){super(...arguments),this.renderOption
         </div>
 
         <ha-dropdown
-          slot="contextMenu" 
-          @click=${e=>e.stopPropagation()}
-          @wa-select=${this._actionItemOptionsClick}
-          @wa-after-hide=${e=>{e.target.firstElementChild.blur()}}
-          placement="bottom-end"
-        >
-          <ha-icon-button slot="trigger" .path=${Ns} @click=${e=>e.stopPropagation()}>
-          </ha-icon-button>
-          <ha-dropdown-item value="change_type">
-            <ha-icon icon="mdi:pencil"></ha-icon>
-            ${Xi("ui.panel.lovelace.editor.card.conditional.change_type",this.hass)}
-          </ha-dropdown-item>
-          <ha-dropdown-item variant="danger" value="delete">
-            <ha-icon icon="mdi:delete"></ha-icon>
-            ${Xi("ui.common.delete",this.hass)}
-          </ha-dropdown-item>
-        </ha-dropdown>
+          slot="contextMenu" .path=${Ns} @click=${e=>{e.stopPropagation(),this._showActionDialog(e)}}></ha-icon-button>
 
         <div slot="content">
 
