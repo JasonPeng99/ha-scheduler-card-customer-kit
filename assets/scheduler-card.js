@@ -2664,9 +2664,11 @@ var se,ae;class oe extends f{constructor(){super(...arguments),this.renderOption
         </div>
 
           <div class="buttons" slot="footer">
+            ${this.hass.user&&this.hass.user.is_admin?q`
             <ha-button appearance="plain" @click=${this._handleDeleteClick} variant="danger" ?disabled=${!this.schedule.entity_id}>
               ${Xi("ui.common.delete",this.hass)}
             </ha-button>
+            `:V}
             <ha-button appearance="plain" @click=${this._handleSaveClick}>
               ${Xi("ui.common.save",this.hass)}
             </ha-button>
