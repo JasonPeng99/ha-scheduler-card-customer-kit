@@ -2119,7 +2119,7 @@ var se,ae;class oe extends f{constructor(){super(...arguments),this.renderOption
 
           ${n.target?q`
           <scheduler-settings-row>
-            <span slot="heading">${Xi("ui.components.entity.entity-picker.entity",this.hass)}</span>
+            <span slot="heading">設備</span>
             <scheduler-entity-picker
               .hass=${this.hass}
               .config=${this.config}
