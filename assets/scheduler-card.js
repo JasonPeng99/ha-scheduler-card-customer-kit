@@ -2091,7 +2091,7 @@ var se,ae;class oe extends f{constructor(){super(...arguments),this.renderOption
         ?expanded=${!0}
         ?disabled=${!0}
       >
-        <div slot="header" class="header">
+        <div slot="header" class="header action-header" @click=${this._showActionDialog}>
           <ha-icon slot="icon" icon="${$a(o,this.config.customize)}"></ha-icon>
           <span>${Qi(c)}</span>
         </div>
@@ -2260,6 +2260,9 @@ var se,ae;class oe extends f{constructor(){super(...arguments),this.renderOption
   }
   scheduler-collapsible-section .header span {
     flex: 1;
+  }
+  .action-header {
+    cursor: pointer;
   }
   ha-list-item.warning, ha-list-item.warning ha-icon {
     color: var(--error-color);
