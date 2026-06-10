@@ -94,3 +94,5 @@ If the page still looks unchanged, fully close and reopen the browser tab.
 - Upstream scheduler-card changes are not automatically inherited
 - When you want to import new upstream fixes, update `assets/scheduler-card.js` and rebuild `gs-scheduler-card.js`
 - This plugin coexists with the original card because all custom elements and the Lovelace card type are renamed to the `gs-` prefix
+- The repo now enforces UTF-8 plus LF through `.editorconfig` and `.gitattributes`
+- When editing customer-facing Chinese text, prefer UTF-8-safe file writes over shell heredocs that depend on terminal codepages
