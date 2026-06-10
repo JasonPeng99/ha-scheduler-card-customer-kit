@@ -206,6 +206,1742 @@ var se,ae;class oe extends f{constructor(){super(...arguments),this.renderOption
         align-items: center;
       }
     `}};t([le({attribute:!1})],sa.prototype,"hass",void 0),t([ce()],sa.prototype,"_params",void 0),t([ce()],sa.prototype,"_search",void 0),t([ce()],sa.prototype,"_filter",void 0),t([ce()],sa.prototype,"_width",void 0),t([ce()],sa.prototype,"_height",void 0),t([ce()],sa.prototype,"expandedGroups",void 0),t([ce()],sa.prototype,"options",void 0),t([ce()],sa.prototype,"scheduleEntities",void 0),sa=t([re("dialog-select-entities")],sa);var aa=Object.freeze({__proto__:null,get DialogSelectEntities(){return sa}});let oa=class extends oe{constructor(){super(...arguments),this.active=!1}render(){return q`
+      <div class="chip ${this.active?"active":""}" @click=${this._handleClick}>
+        <div class="overlay"></div>
+        ${this.renderIcon()}
+        <span class="value"><slot></slot></span>
+        ${this.renderTrailingIcon()}
+      </div>
+    `}renderIcon(){if(!this.icon&&!this.toggleable&&!this.useStateIcon)return V;if(this.toggleable)return q`
+        <div class="icon">
+          <ha-icon
+            icon="mdi:check"
+          ></ha-icon>
+        </div>
+      `;if(this.useStateIcon){let e=this.hass.states[this.value||""];return q`
+          <div class="icon filled">
+            ${e?q`<ha-state-icon .stateObj=${e} .hass=${this.hass}></ha-state-icon>`:q`<ha-icon icon="mdi:help-circle-outline"></ha-icon>
+            `}
+          </div>
+        `}return q`
+        <div class="icon filled">
+          <ha-icon
+            .icon=${this.icon}
+          ></ha-icon>
+        </div>
+      `}renderTrailingIcon(){const e="icn_"+Math.random().toString(36).substring(2,9);return this.removable||this.badge?this.badge?q`
+        <div class="badge">
+          ${this.badge}
+        </div>
+      `:q`
+        <div class="trailing-icon" @click=${this._iconClick}>
+          <ha-icon icon="mdi:close" id="${e}"></ha-icon>
+          ${this.disabled?V:q`<ha-tooltip for="${e}">${Xi("ui.common.remove",this.hass)}</ha-tooltip>`}
+        </div>
+      `:V}_handleClick(e){if(!this.disabled){if(this.toggleable){this.active=!this.active;const e=new CustomEvent("click",{detail:{active:this.active,value:this.value}});this.dispatchEvent(e)}else if(this.selectable){const e=new CustomEvent("click",{detail:{value:this.value}});this.dispatchEvent(e)}e.stopPropagation()}}_iconClick(e){if(e.stopPropagation(),this.disabled)return;const t=new CustomEvent("icon-clicked",{detail:{value:this.value}});this.dispatchEvent(t)}static get styles(){return r`
+      :host {
+        margin: 4px;
+      }
+      .chip {
+        display: inline-flex;
+        position: relative;
+        height: var(--chip-height, 32px);
+        background: none;
+        user-select: none;
+        z-index: 0;
+        align-items: center;
+        justify-content: center;
+      }
+      .chip:before {
+        position: absolute;
+        pointer-events: none;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        content: '';
+        border: 1px solid var(--chip-color, rgb(168, 225, 251));
+        border-radius: var(--chip-border-radius, 32px);
+        background: rgba(0, 0, 0, 0);
+        opacity: var(--background-opacity, 1);
+        z-index: -2;
+      }
+      .chip.active:before {
+        background: var(--chip-color, rgb(168, 225, 251));
+      }
+      .icon {
+        position: relative;
+        width: 32px;
+        height: 32px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        --mdc-icon-size: 20px;
+        margin-right: -8px;
+        color: rgba(0, 0, 0, 0.54);
+      }
+      .icon.filled:before {
+        position: absolute;
+        pointer-events: none;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        content: '';
+        background: var(--chip-color, rgb(168, 225, 251));
+        border-radius: 32px;
+        z-index: -2;
+      }
+      .value {
+        color: var(--primary-text-color);
+        font-size: var(--chip-font-size, 0.875rem);
+        font-weight: 400;
+        display: flex;
+        align-items: center;
+        padding: 0px 12px;
+        opacity: 0.9;
+      }
+      .trailing-icon {
+        position: relative;
+        width: 26px;
+        height: 26px;
+        border-radius: 13px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        --mdc-icon-size: 16px;
+        margin: 0px 3px 0px -8px;
+        color: var(--secondary-text-color);
+        cursor: pointer;
+      }
+      .trailing-icon:before {
+        position: absolute;
+        pointer-events: none;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        content: '';
+        background: var(--chip-color, var(--secondary-text-color));
+        border-radius: 26px;
+        z-index: -2;
+        opacity: 0;
+        transition: opacity 0.1s ease-in-out;
+      }
+      .trailing-icon:hover:before {
+        opacity: 0.15;
+      }
+      .trailing-icon:active:before {
+        opacity: 0.3;
+      }
+      :host([disabled]) .trailing-icon:hover:before, :host([disabled]) .trailing-icon:active:before {
+        opacity: 0;
+      }
+      :host([disabled]) .trailing-icon {
+        cursor: not-allowed;
+      }
+      :host([selectable]) .chip, :host([toggleable]) .chip {
+        cursor: pointer;
+      }
+      .overlay {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: -1;
+        background: rgba(0, 0, 0, 0);
+        border-radius: var(--chip-border-radius, 32px);
+        transition: background-color 0.1s ease-in-out, border 0.1s ease-in-out;
+        border: 1px solid rgba(0, 0, 0, 0);
+      }
+      :host([selectable]) .chip:hover .overlay, :host([toggleable]) .chip:hover .overlay {
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        background: rgba(0, 0, 0, 0.05);
+      }
+      :host([selectable]) .chip:active .overlay, :host([toggleable]) .chip:active .overlay {
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        background: rgba(0, 0, 0, 0.1);
+      }
+      :host([selectable]) .chip:hover .value, :host([toggleable]) .chip:hover .value {
+        opacity: 1;
+      }
+      :host([active]):host([selectable]) .chip:hover .overlay, :host([active]):host([toggleable]) .chip:hover .overlay {
+        background: rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(0, 0, 0, 0);
+      }
+      :host([active]):host([selectable]) .chip:active .overlay, :host([active]):host([toggleable]) .chip:active .overlay {
+        background: rgba(0, 0, 0, 0.2);
+        border: 1px solid rgba(0, 0, 0, 0);
+      }
+      
+      :host([toggleable]) .icon {
+        width: 0px;
+        transition: width 0.1s ease-in-out;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        margin-left: 12px;
+      }
+      :host([toggleable]) .active .icon {
+        width: 20px;
+      }
+      .badge {
+        position: relative;
+        display: flex;
+        height: 26px;
+        min-width: 26px;
+        border-radius: 13px;
+        font-size: var(--chip-font-size, 0.875rem);
+        align-items: center;
+        justify-content: center;
+        margin: 0px 3px 0px -8px;
+      }
+      .badge:before {
+        position: absolute;
+        pointer-events: none;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        content: '';
+        background: var(--chip-color, var(--secondary-text-color));
+        border-radius: 26px;
+        z-index: -2;
+        transition: opacity 0.1s ease-in-out;
+        opacity: 0.1;
+      }
+    `}};t([le({attribute:!1})],oa.prototype,"hass",void 0),t([le({type:String})],oa.prototype,"icon",void 0),t([le({type:Boolean})],oa.prototype,"useStateIcon",void 0),t([le({type:Boolean})],oa.prototype,"selectable",void 0),t([le({type:Boolean})],oa.prototype,"removable",void 0),t([le({type:Boolean})],oa.prototype,"toggleable",void 0),t([le({type:Boolean})],oa.prototype,"active",void 0),t([le({type:String})],oa.prototype,"badge",void 0),t([le({type:String})],oa.prototype,"value",void 0),t([le({type:Boolean})],oa.prototype,"disabled",void 0),oa=t([re("scheduler-chip")],oa);let na=class extends oe{constructor(){super(...arguments),this.value=[]}render(){return this.items?q`
+      ${Object.values(this.items).map(e=>this.renderChipitem(e))}
+    `:q``}renderChipitem(e){const t=e.useStateIcon&&!Object.keys(this.hass.states).includes(e.value||"");return q`
+      <scheduler-chip
+        .hass=${this.hass}
+        .value=${e.value||e.name}
+        .icon=${e.icon}
+        ?useStateIcon=${e.useStateIcon}
+        ?active=${this.value.includes(e.value||e.name)}
+        .badge=${void 0!==e.badge?String(e.badge):void 0}
+        ?selectable=${this.selectable}
+        ?toggleable=${this.toggleable}
+        ?removable=${this.removable}
+        @click=${this._handleClick}
+        @icon-clicked=${this._handleClick}
+        ?disabled=${this.disabled}
+        style="${t?"text-decoration: line-through":""}"
+      >
+        ${e.name}
+      </scheduler-chip>
+      `}_handleClick(e){if(!this.disabled)if(this.toggleable){const t=e.detail.value,i=e.detail.active;this.value.includes(t)&&!i?this.value=this.value.filter(e=>e!=t):!this.value.includes(t)&&t&&(this.value=[...this.value,t]);const s=new CustomEvent("value-changed",{detail:this.value});this.dispatchEvent(s)}else{const t=new CustomEvent("value-changed",{detail:e.detail.value});this.dispatchEvent(t)}}static get styles(){return r`
+      :host {
+        display: flex;
+        flex-direction: row;
+        flex: 1;
+        margin: 0px -4px;
+        flex-wrap: wrap;
+      }
+      scheduler-chip {
+        display: inline-flex;
+        margin-bottom: 4px;
+      }
+    `}};t([le({attribute:!1})],na.prototype,"hass",void 0),t([le({attribute:!1})],na.prototype,"items",void 0),t([le({attribute:!1})],na.prototype,"value",void 0),t([le({type:Boolean})],na.prototype,"selectable",void 0),t([le({type:Boolean})],na.prototype,"toggleable",void 0),t([le({type:Boolean})],na.prototype,"removable",void 0),t([le({type:Boolean})],na.prototype,"disabled",void 0),na=t([re("scheduler-chip-set")],na);const ra=[{name:"primary",weight:10},{name:"secondary",weight:8}];let da=class extends oe{constructor(){super(...arguments),this.value=[],this.multiple=!1,this.disabled=!1,this.multipleMode=!1,this.scheduleEntities=[],this._valueRenderer=e=>{Array.isArray(e)&&(e=e.length?[...e].pop():"");const t=e||"",i=this.hass.states[t];if(!i)return q`
+        <ha-svg-icon
+          slot="start"
+          .path=${qs}
+          style="margin: 0 4px"
+        ></ha-svg-icon>
+        <span slot="headline">${t}</span>
+      `;const s=this._parseEntityItem(t);return q`
+      ${s.icon?q`
+        <ha-icon
+          slot="start"
+          icon="${s.icon}"
+        ></ha-icon>
+       `:q`
+      <state-badge
+        .hass=${this.hass}
+        .stateObj=${i}
+        slot="start"
+        color="var(--icon-primary-color)"
+      ></state-badge>
+      `}
+      <span slot="headline">${s.primary}</span>
+      <span slot="supporting-text">${s.secondary}</span>
+    `},this._rowRenderer=e=>{const t=e.id||"",i=this.hass.states[t];return q`
+      <ha-combo-box-item type="button" compact>
+        ${e.icon?q`
+          <ha-icon
+            slot="start"
+            icon="${e.icon}"
+          ></ha-icon>
+        `:i?q`
+          <state-badge
+            .hass=${this.hass}
+            .stateObj=${i}
+            slot="start"
+            color="var(--icon-primary-color)"
+          ></state-badge>
+        `:q`
+          <ha-svg-icon
+            slot="start"
+            .path=${qs}
+          ></ha-svg-icon>
+        `}
+        <span slot="headline">${e.primary}</span>
+        ${e.secondary?q`<span slot="supporting-text">${e.secondary}</span>`:V}
+      </ha-combo-box-item>
+    `},this._filteredItems=()=>{let e=Object.keys(this.hass.states);return this.domain&&(e=e.filter(e=>Wi(e)==this.domain)),this.multiple&&(e=e.filter(e=>{var t;return!(null===(t=this.value)||void 0===t?void 0:t.includes(e))})),this.config&&(e=e.filter(e=>((this.config.include||Ve).some(t=>Ki(t,e))||Object.keys(this.config.customize||{}).some(t=>Ki(t,e)))&&!(this.config.exclude||[]).some(t=>Ki(t,e)))),e=e.filter(e=>!this.scheduleEntities.includes(e)),this.filterFunc&&(e=e.filter(e=>this.filterFunc(this.hass.states[e]))),e.map(e=>this._parseEntityItem(e))}}async firstUpdated(){this.scheduleEntities=Object.entries(await Oe(this.hass)).map(([,e])=>e.entity_id),this.domain&&this.config&&!Gi(this.domain,this.config)&&(this.config=Object.assign(Object.assign({},this.config),{include:[...this.config.include||[],this.domain],exclude:[...(this.config.exclude||[]).filter(e=>!e.startsWith(this.domain))]})),this._autoSelectIfSingleEntity()}updated(e){super.updated(e),e.has("domain")&&this._autoSelectIfSingleEntity()}_autoSelectIfSingleEntity(){if(this.value&&this.value.length>0)return;const e=this._filteredItems();1===e.length&&(this.value=[e[0].id],Ts(this,"value-changed",{value:this.value}))}render(){var e,t;return q`
+      ${this.renderChips()}
+
+      ${(null===(e=this.value)||void 0===e?void 0:e.length)&&!this.multipleMode&&this.multiple?V:q`
+
+      <ha-generic-picker
+        .label=${(null===(t=this.value)||void 0===t?void 0:t.length)?"":Xi("ui.components.entity.entity-picker.choose_entity",this.hass)}
+        .hass=${this.hass}
+        .autofocus=${this.autofocus}
+        .notFoundLabel=${Xi("ui.components.combo-box.no_match",this.hass)}
+        .value=${this.multiple?"":this.value}
+        .valueRenderer=${this._valueRenderer}
+        .rowRenderer=${this._rowRenderer}
+        .disabled=${this.disabled}
+        .getItems=${this._filteredItems}
+        .searchKeys=${ra}
+        .searchLabel=${Xi("ui.dialogs.quick-bar.filter_placeholder",this.hass)}
+        @value-changed=${this._valueChanged}
+        hide-clear-icon
+        allow-custom-value
+      >
+      </ha-generic-picker>
+      `}
+    `}renderChips(){if(!this.multiple)return V;let e=(this.value||[]).map(e=>{const t=this._parseEntityItem(e);return{name:t.primary,value:e,useStateIcon:!t.icon,icon:t.icon}});return q`
+      <div class="wrapper">
+      <scheduler-chip-set
+        .hass=${this.hass}
+        .items=${e}
+        removable
+        @value-changed=${this._removeClick}
+        ?disabled=${this.disabled}
+      >
+      </scheduler-chip-set>
+      <div class="column-right">
+      ${e.length?q`
+      <ha-icon-button
+        @click=${e=>{this.multipleMode=!this.multipleMode,e.target.blur()}}
+        .path=${this.multipleMode?"M7.41,15.41L12,10.83L16.59,15.41L18,14L12,8L6,14L7.41,15.41Z":Ms}
+        slot="end"
+      ></ha-icon-button>
+      `:V}
+      </div>
+      </div>
+      `}_valueChanged(e){let t=e.detail.value;const i=e.currentTarget;t&&(this.value=[...this.value||[],t],this.multiple&&(i.value=""),Ts(this,"value-changed",{value:this.value}),e.stopPropagation())}_removeClick(e){const t=e.detail;this.value=(this.value||[]).filter(e=>e!==t),Ts(this,"value-changed",{value:this.value})}_parseEntityItem(e){var t,i,s,a;const o=Object.entries((null===(t=this.config)||void 0===t?void 0:t.customize)||{}).filter(([t,i])=>Ki(t,e)).map(([e,t])=>t),n=null===(i=o.find(e=>"name"in e))||void 0===i?void 0:i.name,r=null===(s=o.find(e=>"icon"in e))||void 0===s?void 0:s.icon;return{id:e,primary:n||Zi(e,null===(a=this.hass.states[e])||void 0===a?void 0:a.attributes),secondary:e,icon:r}}};da.styles=r`
+    :host {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+    :host > * {
+      display: block;
+      width: 100%;
+    }
+    div.wrapper {
+      display: flex;
+    }
+    scheduler-chip-set {
+      display: flex;
+    }
+    div.column-right {
+      display: flex;
+    }
+    div.column-right ha-icon-button {
+      display: flex;
+      align-self: flex-end;
+    }
+  `,t([le({attribute:!1})],da.prototype,"hass",void 0),t([le()],da.prototype,"domain",void 0),t([le()],da.prototype,"config",void 0),t([le({type:Array})],da.prototype,"value",void 0),t([le({type:Boolean})],da.prototype,"multiple",void 0),t([le({type:Boolean})],da.prototype,"disabled",void 0),t([ce()],da.prototype,"multipleMode",void 0),t([ce()],da.prototype,"scheduleEntities",void 0),da=t([re("scheduler-entity-picker")],da);let la=class extends oe{constructor(){super(...arguments),this.expanded=!1,this.disabled=!1,this.idx=-1,this.openClose=new CustomEvent("open-close",{detail:{},bubbles:!0,composed:!0})}render(){return q`
+      <div
+        class="header ${this.expanded?"expanded":""}"
+        @click=${this._toggleContent}
+        @focus=${this._focusChanged}
+        @blur=${this._focusChanged}
+        role="button"
+        tabindex="0"
+        aria-expanded=${this.expanded}
+        aria-controls="sect1"
+      >
+        ${this.disabled?"":q`
+        <ha-icon
+          icon="mdi:chevron-down"
+          class="chevron ${this.expanded?"expanded":""}"
+        ></ha-icon>
+        `}
+        <slot name="header" class="title"></slot>
+        <div id="contextMenu">
+          <slot name="contextMenu">
+          </slot>
+        </div>
+      </div>
+
+      <div class="container">
+        <slot name="content"></slot>
+      </div>
+    `}_toggleContent(){this.disabled||this.dispatchEvent(this.openClose)}attributeChangedCallback(e,t,i){let s=void 0;if(null!==this.shadowRoot)for(const e of this.shadowRoot.children)if("container"==e.className){s=e;break}if(s)if(this.hasAttribute("expanded")){const e=s.scrollHeight;s.style.height=e+"px"}else s.style.height="0px";super.attributeChangedCallback(e,t,i)}_focusChanged(e){this.disabled||this.shadowRoot.querySelector(".header").classList.toggle("focused","focus"===e.type)}static get styles(){return r`
+      :host {
+        display: block;
+        border-radius: 12px;
+        border: 1px solid var(--divider-color);
+        box-sizing: border-box;
+        margin: 8px 0px;
+        position: relative;
+      }
+      .header {
+        display: flex;
+        width: 100%;
+        border-radius: 12px;
+        padding: 12px;
+        box-sizing: border-box;
+        cursor: pointer;
+      }
+      :host([disabled]) .header {
+        cursor: default;
+      }
+      .header .title {
+        font-weight: 600;
+        padding: 0px 8px;
+      }
+      .header ::slotted(div) {
+        flex: 1;
+        margin-right: 32px;
+      }
+      .header.focused {
+        background: var(--input-fill-color);
+      }
+      .header.expanded {
+        border-radius: 12px 12px 0px 0px;
+      }
+      #contextMenu {
+        position: absolute;
+        right: 0px;
+        top: 0px;
+      }
+
+      .chevron {
+        transition: transform 150ms cubic-bezier(0.4, 0, 0.2, 1);
+        direction: var(--direction);
+        margin-left: 0px;
+      }
+      .chevron.expanded {
+        transform: rotate(180deg);
+      }
+      .container {
+        overflow: hidden;
+        transition: height 300ms cubic-bezier(0.4, 0, 0.2, 1);
+        padding: 0px 12px;
+        box-sizing: border-box;
+        height: 0px;
+      }
+      :host([disabled]) .container {
+        height: auto;
+      }
+      .container.expanded {
+        height: auto;
+      }
+      @media all and (max-width: 450px) {
+        .container {
+          padding: 0px;
+        }
+      }
+    `}};t([le({type:Boolean,reflect:!0})],la.prototype,"expanded",void 0),t([le({type:Boolean,reflect:!0})],la.prototype,"disabled",void 0),t([le({attribute:!0})],la.prototype,"idx",void 0),t([le({type:CustomEvent})],la.prototype,"openClose",void 0),la=t([re("scheduler-collapsible-section")],la);let ca=class extends oe{set openedItem(e){e!==this._openedItem&&void 0!==e&&setTimeout(()=>{this.updateOpenedItem(e)},50)}constructor(){super(),this.disabled=!1,this._openedItem=-1,this._numItems=0,this.addEventListener("open-close",this.toggleActiveSection)}firstUpdated(){const e=this.querySelectorAll("scheduler-collapsible-section");this._numItems=e.length}toggleActiveSection(e){if(this.disabled)return;const t=e.target,i=Number(t.getAttribute("idx"));"true"===t.getAttribute("expanded")?this.updateOpenedItem(-1):this.updateOpenedItem(i)}updateOpenedItem(e){this.querySelectorAll("scheduler-collapsible-section").forEach((function(t){const i=Number(t.getAttribute("idx"));i!==e&&t.getAttribute("expanded")?t.removeAttribute("expanded"):i!==e||t.getAttribute("expanded")||t.setAttribute("expanded","true")})),this._openedItem=e;const t=new CustomEvent("openclose-changed",{detail:{item:e}});this.dispatchEvent(t)}render(){return q`
+      <slot></slot>
+    `}};t([le()],ca.prototype,"disabled",void 0),t([ce()],ca.prototype,"_openedItem",void 0),t([ce()],ca.prototype,"_numItems",void 0),ca=t([re("scheduler-collapsible-group")],ca);const ua="__NONE_OPTION__";let ha=class extends oe{constructor(){super(...arguments),this.disabled=!1}render(){var e;if(this.config.select){const e=this.config.select,t=[this.value||[]].flat().map(String),i=e=>{const i=e.detail;this.value=t.filter(e=>e!=i),Ts(this,"value-changed",{value:this.value})},s=()=>{let e=t.map(e=>Object({name:e,value:e}));return q`
+        <scheduler-chip-set
+          .hass=${this.hass}
+          .items=${e}
+          removable
+          @value-changed=${i}
+        >
+        </scheduler-chip-set>`},a=e=>{var t;let i=null===(t=this.config.select)||void 0===t?void 0:t.translation_key,s="";return i&&(s=Xi(i.replace("${value}",e),this.hass,!1)),s||(s=e),s},o=e=>"object"==typeof e?{id:e.value,primary:a(e.label),icon:e.icon}:{id:e,primary:a(e)};let n=[...null==e?void 0:e.options].map(o),r=[this.value||[]].flat().map(String);n=[...n,...r.filter(e=>!n.find(t=>t.id==e)).map(o)],Array.isArray(this.value)&&(n=n.filter(e=>"object"==typeof e?!t.includes(e.id):!t.includes(e)));const d=()=>{if(!n.length)return q`
+          <ha-dropdown-item .value=${ua}>
+            ${this.hass.localize("ui.components.combo-box.no_match")}
+          </ha-dropdown-item>
+        `;n.some(e=>e.icon);return n.map(e=>q`
+          <ha-dropdown-item
+            .value=${e.id}
+          >
+            ${e.icon?q`<ha-icon slot="icon" .icon=${e.icon}></ha-icon>`:V}
+            <span>${e.primary}</span>
+          </ha-dropdown-item>
+        `)},l=e=>{let t=e.target,i=t.querySelector("ha-picker-field");this.style.setProperty("--select-menu-width",i.offsetWidth+"px"),t.classList.add("opened")},c=e=>{e.target.classList.remove("opened")},u=e=>{const t=e.detail.item.value;(t!=ua&&!Array.isArray(this.value)||(e.target.value=void 0,t!=ua))&&this._valueChanged(new CustomEvent("value-changed",{detail:{value:t}}))},h=()=>{this._valueChanged(new CustomEvent("value-changed",{detail:{value:void 0}}))},m=Be(this.value)&&!Array.isArray(this.value)?n.find(e=>e.id===this.value):void 0,p=m?m.primary||m.id:Be(this.value)&&!Array.isArray(this.value)?this.value:void 0;return q`
+        <div class="select-wrapper">
+          ${e.multiple?q`
+          <div class="chips">
+          ${s()}
+          </div>
+          `:""}
+          <ha-dropdown
+            placement="bottom"
+            @wa-select=${u}
+            @wa-show=${l}
+            @wa-hide=${c}
+          >
+            <ha-picker-field
+              slot="trigger"
+              type="button"
+              compact
+              @clear=${h}
+              .disabled=${this.disabled}
+              .hideClearIcon=${this.disabled||!Be(this.value)||Array.isArray(this.value)&&!this.value.length}
+              .value=${p}
+              .icon=${null==m?void 0:m.icon}
+            >
+            </ha-picker-field>
+            ${d()}
+          </ha-dropdown>
+        </div>
+      `}if(this.config.number){const t=this.config.number,i="box"==t.mode||!Be(t.min)||!Be(t.max);let s=this.value;i||"number"==typeof s||(s=t.min),"number"==typeof t.scale_factor&&(s=Number(s)/t.scale_factor),"number"==typeof(null==t?void 0:t.step)&&(s=Math.round(Number(s)/t.step)*t.step),Be(s)&&(s=rs(Number(s)));const a=e=>{let i=Number(e.target.value);"number"==typeof t.scale_factor&&(i*=t.scale_factor),"number"==typeof(null==t?void 0:t.step)&&(i=Math.round(i/t.step)*t.step),i=rs(i),this._valueChanged(new CustomEvent("value-changed",{detail:{value:i}})),e.stopPropagation()},o=e=>{e.stopPropagation();let t=e.target.value;const i=""===t||isNaN(Number(t))?void 0:Number(t);this._valueChanged(new CustomEvent("value-changed",{detail:{value:i}}))},n=(e,i)=>{let s=t.step&&Number(t.step)%1==0?null!==e.match(/^-?\d+$/):null!==e.match(/^[+-]?\d+([.,]\d+)?$/);return s&&Be(t.min)&&(s=Number(e)>=t.min),s&&Be(t.max)&&(s=Number(e)<=t.max),{valid:s,customError:!s}};return q`
+        <div class="slider-wrapper">
+        ${i?q`
+        <ha-input
+          .inputMode=${t.step&&Number(t.step)%1==0?"numeric":"decimal"}
+          .min=${t.min}
+          .max=${t.max}
+          .value=${s||""}
+          .step=${null!==(e=t.step)&&void 0!==e?e:1}
+          .disabled=${this.disabled}
+          .required=${!0}
+          .suffix=${t.unit}
+          type="number"
+          autoValidate
+          .validityTransform=${n}
+          @input=${o}
+        >
+        </ha-input>
+        `:q`
+        <ha-slider
+          .min=${t.min}
+          .max=${t.max}
+          .step=${t.step||1}
+          .value=${s}
+          @change=${a}
+          ?disabled=${this.disabled}
+        ></ha-slider>
+        <span class="value">${s} ${t.unit||""}</span>
+        `}
+        </div>
+      `}if(this.config.text){this.config.text;return q`
+        <div class="textfield-wrapper">
+          <ha-input
+            .value=${this.value||""}
+            @input=${this._valueChanged}
+            .placeholder=""
+            ?disabled=${this.disabled}
+          ></ha-input> 
+        </div>     
+      `}if(this.config.boolean){let e={select:{options:[{value:"true",label:"True",icon:"mdi:check"},{value:"false",label:"False",icon:"mdi:close"}]}};const t=e=>{let t=Be(e.detail.value)?"true"===e.detail.value:void 0;e.stopPropagation(),this._valueChanged(new CustomEvent("value-changed",{detail:{value:t}}))};return q`
+        <scheduler-combo-selector
+          .hass=${this.hass}
+          .config=${e}
+          .value=${"boolean"==typeof this.value?this.value?"true":"false":void 0}
+          @value-changed=${t}
+          ?disabled=${this.disabled}
+        >
+        </scheduler-combo-selector>
+      `}return q``}_valueChanged(e){if(e.stopPropagation(),Array.isArray(this.value)){let t=e.detail.value;if(!t)return;this.value=[...this.value,t]}else if(e.detail){let t=e.detail.value;void 0===t&&(t=null),this.value=t}else this.value=e.target.value;Ts(this,"value-changed",{value:this.value})}};ha.styles=r`
+      :host {
+        display: flex;
+        width: 100%;
+      }
+      div.slider-wrapper {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        align-items: center;
+        gap: 4px;
+      }
+      div.slider-wrapper > * {
+        display: flex;
+      }
+      div.slider-wrapper ha-slider {
+        flex: 1;
+      }
+      div.slider-wrapper span {
+        justify-content: center;
+        align-self: center;
+        min-width: 45px;
+        text-align: end;
+      }
+      div.slider-wrapper ha-input {
+        --ha-input-input-width: 100px;
+      }
+      div.select-wrapper {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+      }
+      div.textfield-wrapper {
+        display: flex;
+        width: 100%;
+      }
+      div.textfield-wrapper ha-input {
+        display: flex;
+        width: 100%;
+      }
+      ha-dropdown::part(menu) {
+        min-width: var(--select-menu-width);
+      }
+  `,t([le({attribute:!1})],ha.prototype,"hass",void 0),t([le({attribute:!1})],ha.prototype,"config",void 0),t([le()],ha.prototype,"value",void 0),t([le({type:Boolean})],ha.prototype,"disabled",void 0),ha=t([re("scheduler-combo-selector")],ha);let ma=class extends oe{constructor(){super(...arguments),this._config={},this.title="",this.tagOptions=[],this.customTagValue=""}setConfig(e){this._config=Object.assign({simple_editor:!0},e)}async firstUpdated(){this.title="string"==typeof this._config.title?this._config.title:"";const e=(await Ds(this.hass)).map(e=>e.name);e.sort(Yi),this.tagOptions=e}render(){var e,t,i,s,a,o;const n={number:{min:0,max:30,step:1,unit_of_measurement:Fi("ui.panel.card_editor.fields.time_step.unit_minutes",this.hass)}},r={select:{options:this.tagOptions,multiple:!0,custom_value:!0}};return q`
+      <div class="card-config">
+
+        <ha-button @click=${this._showIncludedEntitiesDialog} outlined>
+          ${Fi("ui.panel.card_editor.fields.entities.button_label",this.hass)}
+          <ha-svg-icon
+            slot="trailingIcon"
+            .path=${"M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z"}
+          ></ha-svg-icon>
+        </ha-button>
+
+        <scheduler-settings-row ?showPrefix=${!0}>
+          <ha-checkbox
+            slot="prefix"
+            ?checked=${!1!==this._config.title}
+            @change=${this._setEnableTitle}
+          >
+          </ha-checkbox>
+          <span slot="heading">${Fi("ui.panel.card_editor.fields.title.heading",this.hass)}</span>
+
+          <ha-input
+            .value=${this.title}
+            @input=${this._setTitle}
+            .placeholder=${Fi("ui.panel.common.title",this.hass)}
+            ?disabled=${!1===this._config.title}
+          ></ha-input>
+
+        </scheduler-settings-row>
+
+        <div class="two-columns" style="margin: 10px 0px 15px 0px">
+        <div class="column">
+          <ha-formfield label="${Fi("ui.panel.card_editor.fields.discover_existing.heading",this.hass)}">
+            <ha-switch
+              ?checked=${!1!==this._config.discover_existing}
+              @change=${e=>{this._updateConfig({discover_existing:e.target.checked})}}
+            ></ha-switch>
+          </ha-formfield>
+        </div>
+        <div class="column">
+          <ha-formfield label="${Fi("ui.panel.card_editor.fields.show_header_toggle.heading",this.hass)}">
+            <ha-switch
+              ?checked=${this._config.show_header_toggle}
+              @change=${e=>{this._updateConfig({show_header_toggle:e.target.checked})}}
+            ></ha-switch>
+          </ha-formfield>
+        </div>
+        <div class="column">
+          <ha-formfield label="${Fi("ui.panel.card_editor.fields.show_toggle_switches.heading",this.hass)}">
+            <ha-switch
+              ?checked=${!1!==this._config.show_toggle_switches}
+              @change=${e=>{this._updateConfig({show_toggle_switches:e.target.checked})}}
+            ></ha-switch>
+          </ha-formfield>
+        </div>
+        </div>
+
+        <scheduler-settings-row>
+          <span slot="heading">${Fi("ui.panel.card_editor.fields.time_step.heading",this.hass)}</span>
+
+          <scheduler-combo-selector
+            .hass=${this.hass}
+            .config=${n}
+            .value=${this._config.time_step||15}
+            @value-changed=${e=>{this._updateConfig({time_step:e.detail.value})}}
+          >
+          </scheduler-combo-selector>
+        </scheduler-settings-row>
+
+        <span>${Fi("ui.panel.card_editor.fields.default_editor.heading",this.hass)}</span>
+        <div class="two-columns">
+          <div class="column">
+            <ha-formfield label="${Fi("ui.panel.card_editor.fields.default_editor.options.single",this.hass)}">
+              <ha-radio
+                name="default_editor"
+                value="${me.Single}"
+                @change=${()=>{this._updateConfig({default_editor:me.Single})}}
+                ?checked=${this._config.default_editor!=me.Scheme}
+              >
+              </ha-radio>
+            </ha-formfield>
+          </div>
+          <div class="column">
+            <ha-formfield label="${Fi("ui.panel.card_editor.fields.default_editor.options.scheme",this.hass)}">
+              <ha-radio
+                name="default_editor"
+                value="${me.Scheme}"
+                @change=${()=>{this._updateConfig({default_editor:me.Scheme})}}
+                ?checked=${this._config.default_editor==me.Scheme}
+              >
+              </ha-radio>
+            </ha-formfield>
+          </div>
+        </div>
+
+          <span slot="heading">${Fi("ui.panel.card_editor.fields.sort_by.heading",this.hass)}</span>
+
+        <div class="two-columns">
+        <div class="column">
+
+          <ha-formfield label="${Fi("ui.panel.card_editor.fields.sort_by.options.relative_time",this.hass)}">
+            <ha-radio
+              name="sort_by"
+              value="relative-time"
+              @change=${this._setSortBy}
+              ?checked=${[this._config.sort_by||qe].flat().includes("relative-time")}
+            ></ha-radio>
+          </ha-formfield>
+
+        </div>
+        <div class="column">
+
+          <ha-formfield label="${Fi("ui.panel.card_editor.fields.sort_by.options.title",this.hass)}">
+            <ha-radio
+              name="sort_by"
+              value="title"
+              @change=${this._setSortBy}
+              ?checked=${[this._config.sort_by||qe].flat().includes("title")}
+            ></ha-radio>
+          </ha-formfield>
+        </div>
+        </div>
+
+
+          <span>${Fi("ui.panel.card_editor.fields.display_format_primary.heading",this.hass)}</span>
+
+
+        <div class="two-columns">
+        <div class="column">
+
+          <ha-formfield label="${Fi("ui.panel.card_editor.fields.display_format_primary.options.default",this.hass)}">
+            <ha-radio
+              name="display_format_primary"
+              value="default"
+              @change=${this._setDisplayOptionsPrimary}
+              ?checked=${[(null===(e=this._config.display_options)||void 0===e?void 0:e.primary_info)||"default"].flat().includes("default")}
+            >
+            </ha-radio>
+          </ha-formfield>
+
+        </div>
+        <div class="column">
+
+          <ha-formfield label="${Fi("ui.panel.card_editor.fields.display_format_primary.options.entity_action",this.hass)}">
+            <ha-radio
+              name="display_format_primary"
+              value="{entity}: {action}"
+              @change=${this._setDisplayOptionsPrimary}
+              ?checked=${[(null===(t=this._config.display_options)||void 0===t?void 0:t.primary_info)||"default"].flat().includes("{entity}: {action}")}
+            >
+            </ha-radio>
+          </ha-formfield>
+
+        </div>
+
+        </div>
+
+          <span>${Fi("ui.panel.card_editor.fields.display_format_secondary.heading",this.hass)}</span>
+
+        <div class="two-columns">
+        <div class="column">
+          <ha-formfield label="${Fi("ui.panel.card_editor.fields.display_format_secondary.options.relative_time",this.hass)}">
+            <ha-checkbox
+              value="relative-time"
+              @change=${this._setDisplayOptionsSecondary}
+              ?checked=${[(null===(i=this._config.display_options)||void 0===i?void 0:i.secondary_info)||Re].flat().includes("relative-time")}
+            >
+            </ha-checkbox>
+          </ha-formfield>
+
+          <ha-formfield label="${Fi("ui.panel.card_editor.fields.display_format_secondary.options.time",this.hass)}">
+            <ha-checkbox
+              value="time"
+              @change=${this._setDisplayOptionsSecondary}
+              ?checked=${[(null===(s=this._config.display_options)||void 0===s?void 0:s.secondary_info)||Re].flat().includes("time")}
+            >
+            </ha-checkbox>
+          </ha-formfield>
+
+        </div>
+        <div class="column">
+          <ha-formfield label="${Fi("ui.panel.card_editor.fields.display_format_secondary.options.days",this.hass)}">
+            <ha-checkbox
+              value="days"
+              @change=${this._setDisplayOptionsSecondary}
+              ?checked=${[(null===(a=this._config.display_options)||void 0===a?void 0:a.secondary_info)||Re].flat().includes("days")}
+            >
+            </ha-checkbox>
+          </ha-formfield>
+
+          <ha-formfield label="${Fi("ui.panel.card_editor.fields.display_format_secondary.options.additional_tasks",this.hass)}">
+            <ha-checkbox
+              value="additional-tasks"
+              @change=${this._setDisplayOptionsSecondary}
+              ?checked=${[(null===(o=this._config.display_options)||void 0===o?void 0:o.secondary_info)||Re].flat().includes("additional-tasks")}
+            >
+            </ha-checkbox>
+          </ha-formfield>
+        </div>
+
+        </div>
+
+        <scheduler-settings-row>
+          <span slot="heading">${Fi("ui.panel.card_editor.fields.tags.heading",this.hass)}</span>
+          <div style="display: flex; flex: 1; flex-direction: column">
+            <scheduler-combo-selector
+              .hass=${this.hass}
+              .config=${r}
+              .value=${[this._config.tags||[]].flat()}
+              @value-changed=${e=>{this._updateConfig({tags:e.detail.value})}}
+            >
+            </scheduler-combo-selector>
+              
+            <ha-dropdown
+              @wa-after-hide=${e=>{e.stopPropagation(),e.target.querySelector("ha-button").blur()}}
+              @click=${e=>{e.preventDefault(),e.stopImmediatePropagation()}}
+              @wa-after-show=${e=>{e.target.querySelector("ha-input").focus()}}
+              placement="bottom-start"
+            >
+              <ha-button appearance="plain" slot="trigger">
+                <ha-icon slot="start" icon="mdi:plus"></ha-icon>
+                ${Xi("ui.panel.config.tag.add_tag",this.hass)}
+              </ha-button>
+
+              <div style="display: flex; align-items: center; padding: 0x 2px 0px 8px">
+                <ha-input
+                  .value=${this.customTagValue}
+                  .label=${Xi("ui.panel.config.tag.add_tag",this.hass)}
+                  @input=${e=>{this.customTagValue=e.currentTarget.value}}
+                  .placeholder=""
+                ></ha-input> 
+                <ha-button
+                  appearance="plain"
+                  @click=${this._customTagConfirmClick}
+                >
+                  ${Xi("ui.common.ok",this.hass)}
+                </ha-button>
+              </div>
+            </ha-dropdown>
+          </div>
+        </scheduler-settings-row>
+
+      </div>
+    `}_setEnableTitle(e){e.target.checked?this.title.length?this._updateConfig({title:this.title}):this._updateConfig({title:!0}):this._updateConfig({title:!1})}_setTitle(e){const t=e.target.value;this.title=t,t!==Fi("ui.panel.common.title",this.hass)&&t.length?this._updateConfig({title:t}):this._updateConfig({title:!0})}_setSortBy(e){var t;const i=e.target.value;let s=[(null===(t=this._config)||void 0===t?void 0:t.sort_by)||qe].flat();s=s.filter(e=>"state"==e),s.includes(i)||(s=[...s,i]),this._updateConfig({sort_by:s})}_setDisplayOptionsPrimary(e){var t;const i=e.target.value,s=Object.assign(Object.assign({},null===(t=this._config)||void 0===t?void 0:t.display_options),{primary_info:i});this._updateConfig({display_options:s})}_setDisplayOptionsSecondary(e){var t;const i=e.target.value,s=e.target.checked;let a=Object.assign({},null===(t=this._config)||void 0===t?void 0:t.display_options),o=[a.secondary_info||[]].flat();o=s?Array.from(new Set([...o,i])):o.filter(e=>e!==i),o.sort((e,t)=>{const i={"relative-time":1,time:o.includes("relative-time")?3:2,days:o.includes("relative-time")?2:3,"additional-tasks":4},s=Object.keys(i).includes(e)?i[e]:5,a=Object.keys(i).includes(t)?i[t]:5;return s>a?1:s<a?-1:0}),a=Object.assign(Object.assign({},a),{secondary_info:[...o]}),this._updateConfig({display_options:a})}async _showIncludedEntitiesDialog(e){let t=(this._config.include||[]).filter(e=>!e.includes(".")),i=(this._config.include||[]).filter(e=>e.includes("."));const s=await Es(this.hass);let a=Object.assign(Object.assign({},this._config),{customize:Object.assign(Object.assign({},s),this._config.customize||{})});await new Promise(s=>{const o={cancel:()=>s(null),confirm:e=>s(e),domains:t,entities:i,cardConfig:a};Ts(e.target,"show-dialog",{dialogTag:"dialog-select-entities",dialogImport:()=>Promise.resolve().then((function(){return aa})),dialogParams:o})}).then(e=>{e&&this._updateConfig({include:[...e.domains,...e.entities]})})}_customTagConfirmClick(e){let t=e.target;t=t.parentElement,t=t.parentElement;t.querySelector("ha-button").click();let i=String(this.customTagValue).trim();if(i.length){let e=[this._config.tags||[]].flat();e=[...new Set([...e,i])],this._updateConfig({tags:e})}this.customTagValue=""}_updateConfig(e){this._config&&(this._config=Object.assign(Object.assign({},this._config),e),Ts(this,"config-changed",{config:this._config}))}};ma.styles=r`
+    div.entities-list {
+      max-height: 500px;
+      overflow: auto;
+    }
+    div.row {
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+      cursor: pointer;
+      margin: 10px 0px;
+    }
+    div.row ha-icon {
+      padding: 8px;
+      color: var(--state-icon-color);
+    }
+    div.row ha-switch {
+      padding: 13px 5px;
+    }
+    .info {
+      margin-left: 16px;
+      flex: 1 0 60px;
+    }
+    .info,
+    .info > * {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    ha-input {
+      width: 100%;
+    }
+    div.two-columns {
+      display: flex; 
+      flex-direction: row; 
+    }
+    div.two-columns .column {
+      flex: 50%;
+    
+    }
+    div.two-columns .column > * {
+      display: flex; 
+      flex-direction: column; 
+    }
+    scheduler-combo-selector {
+      min-width: 240px;
+    }
+    ha-dropdown {
+      display: block;
+    }
+  `,t([le({attribute:!1})],ma.prototype,"hass",void 0),t([le()],ma.prototype,"_config",void 0),t([le()],ma.prototype,"title",void 0),t([le()],ma.prototype,"tagOptions",void 0),t([ce()],ma.prototype,"customTagValue",void 0),ma=t([re("scheduler-card-editor")],ma);const pa=r`
+  ha-dialog {
+    --justify-action-buttons: space-between;
+    --dialog-container-padding: var(--safe-area-inset-top, 0)
+      var(--safe-area-inset-right, 0) var(--safe-area-inset-bottom, 0)
+      var(--safe-area-inset-left, 0);
+    --dialog-surface-padding: 0px;
+    --dialog-content-padding: 0px;
+  }
+  /* make dialog fullscreen on small screens */
+  @media all and (max-width: 450px), all and (max-height: 500px) {
+    ha-dialog {
+      --dialog-container-padding: 0px;
+      --dialog-surface-padding: var(--safe-area-inset-top, 0)
+        var(--safe-area-inset-right, 0) var(--safe-area-inset-bottom, 0)
+        var(--safe-area-inset-left, 0);
+      --vertical-align-dialog: flex-end;
+      --ha-dialog-border-radius: var(--ha-border-radius-square);
+    }
+  }
+  @media all and (min-width: 600px) and (min-height: 501px) {
+    ha-dialog {
+      --dialog-surface-margin-top: 40px;
+      --vertical-align-dialog: flex-start;
+    }
+  }
+  .buttons {
+    box-sizing: border-box;
+    display: flex;
+    padding: 16px 24px;
+    justify-content: space-between;
+    background-color: var(--mdc-theme-surface, #fff);
+    border-top: 1px solid var(--divider-color);
+  }
+  .content {
+    padding: 0px 24px 16px 24px;
+  }
+`,_a=(r`
+  .error {
+    color: red;
+  }
+  .dl {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .dt {
+    display: flex;
+    align-content: center;
+    flex-wrap: wrap;
+  }
+  .dd {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, auto) minmax(0, 2fr));
+    margin: 0;
+  }
+  .toggle {
+    padding: 0.6em;
+    border: grey;
+    border-radius: 50%;
+  }
+  .toggle.on {
+    background-color: green;
+  }
+  .toggle.off {
+    background-color: red;
+  }
+  .button {
+    display: block;
+    border: outset 0.2em;
+    border-radius: 50%;
+    border-color: silver;
+    background-color: silver;
+    width: 1.4em;
+    height: 1.4em;
+  }
+  .value {
+    padding-left: 0.5em;
+    display: flex;
+    align-content: center;
+    flex-wrap: wrap;
+  }
+
+
+`,(e,t,i,s)=>{var a;const o=e.service,n=null===(a=e.target)||void 0===a?void 0:a.entity_id,r=ns(e,s);if(!r||!r.fields||!Object.keys(r.fields).includes(t))return!1;const d=r.fields[t];if(null===us(o,n,t,i,s))return!1;if(Object.keys(e.service_data||{}).includes(t))return!0;if(d.supported_features){if(![n||[]].flat().every(e=>{if(!Object.keys(i.states).includes(e))return!1;return((i.states[e].attributes.supported_features||0)&d.supported_features)>0}))return!1}return!("light"==Wi(o)&&![n||[]].flat().every(e=>{if(!Object.keys(i.states).includes(e))return!1;const s=i.states[e].attributes.supported_color_modes||[];return"brightness"!=t||s.filter(e=>"onoff"!=e).length}))});var ga;!function(e){e.OverlappingTime="overlapping_time",e.MissingTargetEntity="missing_target_entity",e.MissingServiceParameter="missing_service_parameter",e.MissingAction="missing_action"}(ga||(ga={}));const va=(e,t,i)=>{let s=[];s=[...s,...e.entries.map(e=>((e,t)=>e.every((i,s)=>{const a=Ae(i.start,t),o=void 0===i.stop?a:Ae(i.stop,t)||86400;return!(a>o)&&e.every((e,i)=>{if(i<=s)return!0;return Ae(e.start,t)>=o})})?null:ga.OverlappingTime)(e.slots,t)).filter(e=>null!==e)];let a=e.entries.map(e=>e.slots.map(e=>e.actions)).flat().flat();return a.length||(s=[...s,ga.MissingAction]),s=[...s,...a.map(e=>((e,t,i)=>{var s;const a=ns(e,i);return(null==a?void 0:a.target)&&!(null===(s=e.target)||void 0===s?void 0:s.entity_id)?ga.MissingTargetEntity:(null==a?void 0:a.fields)&&!Object.entries(a.fields).filter(([s])=>_a(e,s,t,i)).every(([s,a])=>{var o,n;let r=us(e.service,null===(o=e.target)||void 0===o?void 0:o.entity_id,s,t,i);const d=!(!r.number||!(null===(n=r.number)||void 0===n?void 0:n.optional))||a.optional;return!(!Object.keys(e.service_data).includes(s)&&!d)&&!(!Be(e.service_data[s])&&!d)})?ga.MissingServiceParameter:null})(e,t,i)).filter(e=>null!==e)],s.length?s.shift():null},ya=e=>{const t=e=>e.actions.length?(e.stop||(e=Object.fromEntries(Object.entries(e).filter(([e])=>"stop"!=e))),e):null;let i={weekdays:(e=Object.assign(Object.assign({},e),{entries:e.entries.map(e=>Object.assign(Object.assign({},e),{slots:e.slots.map(t).filter(e=>null!==e)}))})).entries[0].weekdays.map(fa),timeslots:e.entries[0].slots.map(ba),name:e.name,start_date:e.start_date,end_date:e.end_date,repeat_type:e.repeat_type,tags:e.tags||[]};return e.schedule_id&&(i=Object.assign(Object.assign({},i),{schedule_id:e.schedule_id})),i},fa=e=>{switch(e){case pe.Monday:return"mon";case pe.Tuesday:return"tue";case pe.Wednesday:return"wed";case pe.Thursday:return"thu";case pe.Friday:return"fri";case pe.Saturday:return"sat";case pe.Sunday:return"sun";case pe.Workday:return"workday";case pe.Weekend:return"weekend";default:return"daily"}},ba=e=>({start:e.start,stop:e.stop,actions:e.actions.map(e=>wa(e)).flat(),condition_type:e.conditions.items.length?e.conditions.type==_e.And?"and":"or":void 0,conditions:e.conditions.items.length?e.conditions.items:void 0,track_conditions:e.conditions.track_changes}),wa=e=>{var t,i;const s=e=>Object.keys(e).filter(t=>Be(e[t])).reduce((t,i)=>(t[i]=e[i],t),{});if(e.target){if(Array.isArray(null===(t=e.target)||void 0===t?void 0:t.entity_id)){return null==e?void 0:e.target.entity_id.map(t=>({service:e.service,service_data:s(e.service_data),entity_id:t}))}return{service:e.service,service_data:s(e.service_data),entity_id:null===(i=e.target)||void 0===i?void 0:i.entity_id}}return{service:e.service,service_data:s(e.service_data)}},ka=(e,t,i)=>{const s={title:Xi("state_badge.default.error",i),description:q`
+    <b>Something went wrong!</b><br />
+    ${e.body.message}<br /><br />
+    ${e.error}<br /><br />
+    Please <a href="https://github.com/nielsfaber/scheduler-card/issues">report</a> the bug.
+  `,primaryButtonLabel:Xi("ui.common.ok",i),confirm:()=>{},cancel:()=>{}};Ts(t,"show-dialog",{dialogTag:"scheduler-generic-dialog",dialogImport:()=>Promise.resolve().then((function(){return Ya})),dialogParams:s})},xa=e=>{if(!Object.keys(e).includes("select")||!e.select){if(Object.keys(e).includes("number")&&e.number){const t=e.number.min;return void 0!==t?t:0}return Object.keys(e).includes("boolean")&&e.boolean?void 0:(Object.keys(e).includes("text")&&e.text,"")}e.select.options},$a=(e,t)=>{const i=ns(e,t),s=Wi(e.service),a=Bi(e.service);if(i.icon)return(o=i.icon).match(/^[a-z]+\:[a-zA-Z\-]+$/)?o:"mdi:"+o;if(Object.keys(cs).includes(s)&&Object.keys(cs[s].services).includes(a)){if(void 0!==cs[s].attributes){let t=cs[s].attributes;const i=Object.keys(t).find(t=>Object.keys(e.service_data).includes(t));if(i&&Object.keys(t[i]).includes(e.service_data[i]))return t[i][e.service_data[i]]}return cs[s].services[a]}return Object.keys(cs).includes(s)&&Object.keys(cs[s].services).includes("{entity_id}")?cs[s].services["{entity_id}"]:"mdi:flash";var o},ja=(e,t,i)=>{let s=Ae("string"==typeof e?Ce(e):e,i),a=Ae("string"==typeof t?Ce(t):t,i);return a>s?1:a<s?-1:0},Oa=e=>Ce(e.start),Sa=e=>{if(Be(e.stop)){const t=Ce(e.stop);return 0==t.hours&&0==t.minutes&&t.mode==be.Fixed?Object.assign(Object.assign({},t),{hours:24}):t}return Se(Oa(e),{minutes:1})},za=(e,t,i,s)=>{let a=t;if(Be(i.stop))return[e,a]=za(e,t+1,{start:i.stop},s),[e,a-1];if(!Be(i.start))return[e,a];let o=Oa(e[t]),n=i.start,r=Oa(e[t]);for(let i=t-1;i>=0;i--){if(e[i].actions.length){r=i==t-1?Se(Oa(e[i]),{minutes:1}):Sa(e[i]);break}r=Oa(e[i])}let d=Se(Sa(e[t]),{minutes:-1});if(!Be(e[t].stop))for(let i=t+1;i<e.length;i++){if(e[i].actions.length){d=i==t+1?Se(Sa(e[i]),{minutes:-1}):Oa(e[i]);break}d=Sa(e[i])}if(ja(r,n,s)<0&&(n=r),ja(d,n,s)>0&&Ae(d,s)>0&&(n=d),e=Object.assign(e,{[t]:Object.assign(Object.assign({},e[t]),{start:Ne(n)})}),ja(o,n,s)<=0)for(let i=t-1;i>=0;i--){let t=ja(Oa(e[i]),n,s),o=ja(Sa(e[i]),n,s);if(t>0&&o<=0){e=Object.assign(e,{[i]:Object.assign(Object.assign({},e[i]),{stop:Ne(n)})});break}if(o>=0)break;t<=0&&(e=Object.assign(e,{[i]:null}),a-=1)}if(ja(o,n,s)<0&&!Be(e[t].stop)&&(e=Be(e[t+1].stop)&&!e[t+1].actions.length?Object.assign(e,{[t+1]:Object.assign(Object.assign({},e[t+1]),{start:Ne(Sa(e[t]))})}):[...e.slice(0,t+1),Object.assign(Object.assign({},e[t]),{start:Ne(Sa(e[t])),stop:Ne(Oa(e[t+1])),actions:[]}),...e.slice(t+1)]),ja(o,n,s)>=0)for(let t=a+1;t<e.length;t++){let i=Sa(e[a]),o=ja(Oa(e[t]),i,s),n=ja(Sa(e[t]),i,s);if(o>=0&&n<0)e=Object.assign(e,{[t]:Object.assign(Object.assign({},e[t]),{start:Ne(i)})});else{if(o<0)break;n>=0&&(e=Object.assign(e,{[t]:null}))}}return ja(o,n,s)>0&&(t>0&&Be(e[t-1].stop)?e=Object.assign(e,{[t-1]:Object.assign(Object.assign({},e[t-1]),{stop:Ne(n)})}):(e=[...e.slice(0,t),Object.assign(Object.assign({},e[t]),{start:t>0?Ne(Sa(e[t-1])):"00:00:00",stop:Ne(n),actions:[]}),...e.slice(t)],a=t+1)),[e=e.filter(Be),a]},Ca=(e,t)=>{const i=new Date(t),s=3600*i.getHours()+60*i.getMinutes()+i.getSeconds();let a=3600*e.hours+60*e.minutes-s;const o=a<0?-1:1;a=Math.abs(a);let n=Math.floor(a/3600),r=Math.round((a-3600*n)/60);return o<0&&(n>0&&(n=-n),r=-r),ze({hours:n,minutes:r})};let Aa=class extends oe{constructor(){super(...arguments),this.selectedSlot=null,this._width=0,this.large=!1}connectedCallback(){super.connectedCallback(),this._resizeObserver=new ResizeObserver(e=>{for(const t of e){const e=t.contentRect.width;e!==this._width&&(this._width=e)}}),this._resizeObserver.observe(this)}disconnectedCallback(){var e;super.disconnectedCallback(),null===(e=this._resizeObserver)||void 0===e||e.disconnect()}render(){return q`
+      <div class="bar">
+        ${this.renderTimeslots()}
+      </div>
+      <div class="time-bar">
+        ${this.renderTimebar()}
+      </div>
+    `}renderTimebar(){const e=this._width,t=[1,2,3,4,6,8,12],i=De(this.hass.locale),s=i?130:100;if(!e)return q``;let a=Math.ceil(24/(e/s));for(;!t.includes(a);)a++;const o=[0,...Array.from(Array(24/a-1).keys()).map(e=>(e+1)*a),24];return o.map((e,t)=>{let s=a/24*100;s=Math.floor(100*s)/100;let n={mode:be.Fixed,hours:e,minutes:0};return 0==t?q`
+        <span class="left" style=${Zs({width:s/2+"%"})}>${Ne(n,{seconds:!1,am_pm:i})}</span>
+      `:t==o.length-1?q`
+        <span class="right" style=${Zs({width:s/2+"%"})}>${Ne(n,{seconds:!1,am_pm:i})}</span>
+      `:q`
+        <span style=${Zs({width:s+"%"})}>${Ne(n,{seconds:!1,am_pm:i})}</span>
+      `})}renderTimeslots(){const e=this.schedule.slots,t=this.computeSlotWidths();return e.map((i,s)=>{const a=i.actions.length?(Wi(i.actions[0].service)==="script"?Os([((i.actions[0].target||{}).entity_id)||((i.actions[0].service_data||{}).entity_id)||[]].flat().shift()||i.actions[0].service,this.hass,this.config.customize):fs(i.actions[0],this.hass,this.config.customize,!0,!0)):"",o=5*a.length+10,n=s>0?15:0,r=s<e.length-1?15:0,d=t[s]-n-r,l=e[s+1];return q`
+        <div
+          class="slot ${this.selectedSlot==s?"selected":""} ${i.actions.length?"":"empty"} ${void 0===i.stop?"short":""}"
+          style="${Zs({width:t[s]+"px"})}"
+          @click=${this._toggleSelectTimeslot}
+          idx="${s}"
+        >
+          ${i.stop,""}
+          ${i.actions.length?a&&(d>o/3||d>50)&&d>30?q`<span style="margin-left: ${n}px; margin-right: ${r}px">${a}</span>`:d>16?q`<ha-icon icon="${$a(i.actions[0],this.config.customize)}"></ha-icon>`:"":""}
+        </div>
+        ${s<e.length-1&&i.stop?q`
+        <div idx="${s}" class="handle ${this.selectedSlot==s+1||this.selectedSlot==s?"":"hidden"} ${l&&!l.stop?"center":""}">
+          <span>
+            <ha-icon-button
+              .path=${"M18.17,12L15,8.83L16.41,7.41L21,12L16.41,16.58L15,15.17L18.17,12M5.83,12L9,15.17L7.59,16.59L3,12L7.59,7.42L9,8.83L5.83,12Z"}
+              @mousedown=${this._handleDragStart}
+              @touchstart=${this._handleDragStart}
+            >
+            </ha-icon-button>
+          </span>
+        </div>
+        `:""}
+      `})}computeSlotWidths(){const e=this._width,t=this.schedule.slots,i=e-3*(t.length-1),s=t.map((e,i)=>{const s=Ae(e.start,this.hass);let a;if(void 0!==e.stop)a=Ae(e.stop,this.hass),!a&&s&&(a=86400);else{const e=t[i+1];a=e&&Ae(e.start,this.hass)||86400}return(a-s)/86400}),a=5/i,o=i-5*s.filter(e=>e<a).length;return s.map(e=>e<a?5:e*o)}_toggleSelectTimeslot(e){let t=e.target;"div"!=t.tagName.toLowerCase()&&(t=t.parentElement);const i=Number(t.getAttribute("idx"));this.selectedSlot=this.selectedSlot!==i?i:null;const s=new CustomEvent("update",{detail:{selectedSlot:this.selectedSlot}});this.dispatchEvent(s),e.stopPropagation()}_handleDragStart(e){e.preventDefault(),e.stopPropagation();let t=e.target;for(;"DIV"!==t.tagName;)t=t.parentElement;const i=t.parentElement.getBoundingClientRect(),s=Number(t.getAttribute("idx")),a=this.config.time_step||15,o=60*a;let n=s>0?Ae(this.schedule.slots[s-1].stop||this.schedule.slots[s-1].start,this.hass)+o:o,r=(Ae(this.schedule.slots[s+1].stop||this.schedule.slots[s+1].start,this.hass)||86400)-o;void 0===this.schedule.slots[s+1].stop&&(r=(Ae(this.schedule.slots[s+2].stop||this.schedule.slots[s+2].start,this.hass)||86400)-o);const d=Ce(this.schedule.slots[s+1].start).mode;if([be.Sunrise,be.Sunset].includes(d)){let e=Ce(this.schedule.slots[s+1].start),t=Ae(Object.assign(Object.assign({},e),{hours:4,minutes:0}),this.hass),i=Ae(Object.assign(Object.assign({},e),{hours:-4,minutes:0}),this.hass);i>n&&(n=i),t<r&&(r=t)}let l=e=>{let t;e.preventDefault(),t="undefined"!=typeof TouchEvent&&e instanceof TouchEvent?e.changedTouches[0].pageX:e.pageX,t-=i.left,t>i.width&&(t=i.width),t<0&&(t=0);let o=Math.round(t/i.width*86400);o<n?o=n:o>r&&(o=r);const l=Math.floor(o/3600),c=Math.round((o-3600*l)/60);let u={mode:be.Fixed,hours:l,minutes:c};if([be.Sunrise,be.Sunset].includes(d)){const e=d==be.Sunrise?this.hass.states["sun.sun"].attributes.next_rising:this.hass.states["sun.sun"].attributes.next_setting,t=Ca(u,e);u={mode:d,hours:t.hours,minutes:t.minutes}}u=ze(u,a);const h=Ne(u);let m=[...this.schedule.slots];if(m=Object.assign(m,{[s]:Object.assign(Object.assign({},m[s]),{stop:h}),[s+1]:Object.assign(Object.assign({},m[s+1]),{start:Ne(u)})}),void 0===m[s+1].stop){const e=Ne(Se(u,{minutes:1}));m=Object.assign(m,{[s+2]:Object.assign(Object.assign({},m[s+2]),{start:e})})}this.schedule=Object.assign(Object.assign({},this.schedule),{slots:m});const p=new CustomEvent("update",{detail:{slots:m}});this.dispatchEvent(p)};const c=e=>{e.preventDefault()},u=()=>{window.removeEventListener("mousemove",l),window.removeEventListener("touchmove",l),window.removeEventListener("mouseup",u),window.removeEventListener("touchend",u),window.removeEventListener("blur",u),window.removeEventListener("dragstart",c),l=()=>{}};window.addEventListener("mouseup",u),window.addEventListener("touchend",u),window.addEventListener("blur",u),window.addEventListener("dragstart",c),window.addEventListener("mousemove",l),window.addEventListener("touchmove",l)}static get styles(){return r`
+      :host {
+        display: block;
+        max-width: 100%;
+        overflow: hidden;
+      }
+      .bar {
+        width: 100%;
+        height: 60px;
+        display: flex;
+      }
+      .time-bar {
+        width: 100%;
+        height: 18px;
+        display: flex;
+      }
+      .time-bar span {
+        display: flex;
+        justify-content: center;
+        white-space: nowrap;
+      }
+      .time-bar span.left {
+        justify-content: left;
+      }
+      .time-bar span.right {
+        justify-content: right;
+      }
+
+      .slot {
+        display: flex;
+        height: 100%;
+        box-sizing: border-box; 
+        cursor: pointer;
+        background: rgba(var(--rgb-primary-color), 0.7);
+        color: var(--text-primary-color);
+        font-weight: 500;
+        align-items: center;
+        justify-content: center;
+        word-break: break-all;
+        white-space: normal;
+        margin-right: 3px;
+      }
+      .slot:hover {
+        background: rgba(var(--rgb-primary-color), 0.85);
+      }
+      .slot.selected {
+        background: #f59e0b !important;
+        color: #111827 !important;
+        border: 3px solid #fff7ed !important;
+        box-shadow: inset 0 0 0 2px rgba(120, 53, 15, 0.28), 0 0 0 2px rgba(245, 158, 11, 0.45) !important;
+      }
+      .slot.selected:hover {
+        background: #fbbf24 !important;
+        color: #111827 !important;
+        border: 3px solid #ffffff !important;
+        box-shadow: inset 0 0 0 2px rgba(120, 53, 15, 0.34), 0 0 0 2px rgba(251, 191, 36, 0.55) !important;
+      }
+      .slot:first-child {
+        border-radius: 10px 0px 0px 10px;
+      }
+      .slot:last-child {
+        border-radius: 0px 10px 10px 0px;
+        margin-right: 0px;
+      }
+      .slot.empty {
+        background: rgba(var(--rgb-secondary-text-color), 0.5);
+      }
+      .slot.empty:hover {
+        background: rgba(var(--rgb-secondary-text-color), 0.65);
+      }
+      .slot.empty.selected {
+        background: #d6d3d1 !important;
+        color: #111827 !important;
+        border: 3px solid #fffbeb !important;
+        box-shadow: inset 0 0 0 2px rgba(68, 64, 60, 0.18), 0 0 0 2px rgba(251, 191, 36, 0.22) !important;
+      }
+      .slot.empty.selected:hover {
+        background: #e7e5e4 !important;
+        color: #111827 !important;
+        border: 3px solid #ffffff !important;
+        box-shadow: inset 0 0 0 2px rgba(68, 64, 60, 0.24), 0 0 0 2px rgba(251, 191, 36, 0.3) !important;
+      }
+      .handle:not(.hidden) span {
+        box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.7) !important;
+      }
+      .slot.selected + .handle span,
+      .handle:not(.hidden) + .slot.selected ~ .handle span {
+        box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.9) !important;
+      }
+      .slot .marker {
+        width: 24px;
+        height: 24px;
+        background: rgba(var(--rgb-primary-color), 0.85);
+        margin-top: -80px;
+        position: absolute;
+        transform: rotate(45deg);
+        border-radius: 12px 12px 0px 12px;
+      }
+      .slot .marker:hover {
+        background: rgba(var(--rgb-primary-color), 1);
+      }
+      .slot.empty .marker {
+        background: rgba(var(--rgb-secondary-text-color), 0.85);
+      }
+      .slot.empty .marker:hover {
+        background: rgba(var(--rgb-secondary-text-color), 1);
+      }
+      .handle {
+        display: flex;
+        width: 36px;
+        height: 100%;
+        align-content: center;
+        align-items: center;
+        justify-content: center;
+        margin-left: -18px;
+        margin-right: -18px;
+        visibility: visible;
+      }
+      .handle.hidden {
+        visibility: hidden;
+      }
+      .handle span {
+        background: var(--card-background-color);
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        z-index: 5;
+      }
+      .handle ha-icon-button {
+        --mdc-icon-button-size: 36px;
+        margin-top: -12px;
+        margin-left: -12px;
+      }
+      .handle.center span {
+        margin-right: -2px;
+      }
+    `}};t([le({attribute:!1})],Aa.prototype,"config",void 0),t([ce()],Aa.prototype,"schedule",void 0),t([ce()],Aa.prototype,"selectedSlot",void 0),t([ce()],Aa.prototype,"_width",void 0),t([le({type:Boolean})],Aa.prototype,"large",void 0),Aa=t([re("scheduler-timeslot-editor")],Aa);const Ta=e=>{let t=60*e.hours+e.minutes;return t>240?e=Object.assign(Object.assign({},e),{hours:4,minutes:0}):t<-240&&(e=Object.assign(Object.assign({},e),{hours:-4,minutes:0})),e};let Ea=class extends oe{constructor(){super(...arguments),this.hours=0,this.minutes=0,this.mode=be.Fixed,this.autoValidate=!0,this.required=!0,this.disabled=!1,this.label="",this.useAmPm=!1,this.large=!1,this.stepSize=10}set time(e){const t=Ce(e);this.mode=t.mode,this.hours=t.hours,this.minutes=t.minutes}render(){return q`
+      <div class="time-input-wrap">
+        <div class="input">
+          ${this.label?q`<span class="label">${this.label}</span>`:V}
+          ${this.large?V:this._renderTimeMode()}
+          <div class="hours">
+            ${this.large?q`
+            <ha-button
+              appearance="plain"
+              @click=${()=>this._addTimeOffset({hours:1})}
+              ?disabled=${this.mode!=be.Fixed&&4==this.hours}
+            >
+              <ha-icon icon="mdi:chevron-up"></ha-icon>
+            </ha-button>
+            `:V}
+            <ha-input
+              id="hour"
+              inputmode="numeric"
+              .value=${this.formatHours()}
+              label=""
+              name="hours"
+              @change=${this._hoursChanged}
+              @focusin=${this._onFocus}
+              .required=${this.required}
+              .autoValidate=${this.autoValidate}
+              maxlength="2"
+              max=${this.mode==be.Fixed?this.useAmPm?12:23:4}
+              min=${this.mode==be.Fixed||this.large?0:-4}
+              .disabled=${this.disabled}
+              .validityTransform=${(e,t)=>{let i=null!==e.match(/^[1|2]?[0-9]$/);return{valid:i,customError:!i}}}
+            >
+            </ha-input>
+            ${this.large?q`
+            <ha-button
+              appearance="plain"
+              @click=${()=>this._addTimeOffset({hours:-1})}
+              ?disabled=${this.mode!=be.Fixed&&-4==this.hours}
+            >
+              <ha-icon icon="mdi:chevron-down"></ha-icon>
+            </ha-button>
+            `:V}
+          </div>
+          <div class="time-separator">:</div>
+          <div class="minutes">
+            ${this.large?q`
+            <ha-button
+              appearance="plain"
+              @click=${()=>this._addTimeOffset({minutes:this.stepSize})}
+              ?disabled=${this.mode!=be.Fixed&&4==this.hours}
+            >
+              <ha-icon icon="mdi:chevron-up"></ha-icon>
+            </ha-button>
+            `:V}
+            <ha-input
+              id="min"
+              inputmode="numeric"
+              .value=${this.formatMinutes()}
+              label=""
+              @change=${this._minutesChanged}
+              @focusin=${this._onFocus}
+              name="minutes"
+              .required=${this.required}
+              .autoValidate=${this.autoValidate}
+              maxlength="2"
+              max="59"
+              min="0"
+              .disabled=${this.disabled}
+              .validityTransform=${(e,t)=>{let i=null!==e.match(/^[0-5]?[0-9]$/);return{valid:i,customError:!i}}}
+            >
+            </ha-input>
+            ${this.large?q`
+            <ha-button
+              appearance="plain"
+              @click=${()=>this._addTimeOffset({minutes:-this.stepSize})}
+              ?disabled=${this.mode!=be.Fixed&&-4==this.hours}
+            >
+              <ha-icon icon="mdi:chevron-down"></ha-icon>
+            </ha-button>
+            `:V}
+          </div>
+          ${this._renderSuffix()}
+          ${this.large?this._renderTimeMode():V}
+        </div>
+      </div>
+    `}_renderTimeMode(){if(!this.hass.states["sun.sun"])return V;if(this.large){const e=()=>{let e=this._convertTimeMode();e.mode!=be.Fixed&&(e=Ta(e)),this.mode=e.mode,this.hours=e.hours,this.minutes=e.minutes,this._valueChanged()};return q`
+        <div class="mode">
+          ${this.hass.states["sun.sun"]?q`
+          <ha-button
+            appearance="${this.mode==be.Fixed?"plain":"accent"}"
+            variant="${this.mode==be.Fixed?"neutral":"brand"}"
+            @click=${e}
+          >
+            <ha-icon icon="mdi:theme-light-dark"></ha-icon>
+          </ha-button>
+          `:V}
+        </div>
+      `}{let e=[be.Fixed,be.Sunrise,be.Sunset];const t={[be.Fixed]:Xi("ui.components.selectors.selector.types.time",this.hass),[be.Sunrise]:Xi("ui.panel.config.automation.editor.triggers.type.sun.sunrise",this.hass),[be.Sunset]:Xi("ui.panel.config.automation.editor.triggers.type.sun.sunset",this.hass)},i={[be.Fixed]:"mdi:clock-outline",[be.Sunrise]:"mdi:weather-sunset-up",[be.Sunset]:"mdi:weather-sunset-down"},s={[be.Fixed]:"M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z",[be.Sunrise]:"M3,12H7A5,5 0 0,1 12,7A5,5 0 0,1 17,12H21A1,1 0 0,1 22,13A1,1 0 0,1 21,14H3A1,1 0 0,1 2,13A1,1 0 0,1 3,12M15,12A3,3 0 0,0 12,9A3,3 0 0,0 9,12H15M12,2L14.39,5.42C13.65,5.15 12.84,5 12,5C11.16,5 10.35,5.15 9.61,5.42L12,2M3.34,7L7.5,6.65C6.9,7.16 6.36,7.78 5.94,8.5C5.5,9.24 5.25,10 5.11,10.79L3.34,7M20.65,7L18.88,10.79C18.74,10 18.47,9.23 18.05,8.5C17.63,7.78 17.1,7.15 16.5,6.64L20.65,7M12.71,16.3L15.82,19.41C16.21,19.8 16.21,20.43 15.82,20.82C15.43,21.21 14.8,21.21 14.41,20.82L12,18.41L9.59,20.82C9.2,21.21 8.57,21.21 8.18,20.82C7.79,20.43 7.79,19.8 8.18,19.41L11.29,16.3C11.5,16.1 11.74,16 12,16C12.26,16 12.5,16.1 12.71,16.3Z",[be.Sunset]:"M3,12H7A5,5 0 0,1 12,7A5,5 0 0,1 17,12H21A1,1 0 0,1 22,13A1,1 0 0,1 21,14H3A1,1 0 0,1 2,13A1,1 0 0,1 3,12M15,12A3,3 0 0,0 12,9A3,3 0 0,0 9,12H15M12,2L14.39,5.42C13.65,5.15 12.84,5 12,5C11.16,5 10.35,5.15 9.61,5.42L12,2M3.34,7L7.5,6.65C6.9,7.16 6.36,7.78 5.94,8.5C5.5,9.24 5.25,10 5.11,10.79L3.34,7M20.65,7L18.88,10.79C18.74,10 18.47,9.23 18.05,8.5C17.63,7.78 17.1,7.15 16.5,6.64L20.65,7M12.71,20.71L15.82,17.6C16.21,17.21 16.21,16.57 15.82,16.18C15.43,15.79 14.8,15.79 14.41,16.18L12,18.59L9.59,16.18C9.2,15.79 8.57,15.79 8.18,16.18C7.79,16.57 7.79,17.21 8.18,17.6L11.29,20.71C11.5,20.9 11.74,21 12,21C12.26,21 12.5,20.9 12.71,20.71Z"},a=e=>{if(e==be.Fixed)return!1;const t=this._convertTimeMode(e);return Math.abs(60*t.hours+t.minutes)>240};return q`
+      <ha-dropdown
+        @wa-select=${e=>{const t=e.detail.item.value;if(this.mode==t)return;const i=this._convertTimeMode(t);this.hours=i.hours,this.minutes=i.minutes,this.mode=t,this._valueChanged()}}
+        @wa-after-hide=${e=>{e.target.firstElementChild.blur()}}
+        ?disabled=${this.disabled}
+      >
+        <ha-icon-button
+          slot="trigger"
+          .path=${s[this.mode]}
+          ?disabled=${this.disabled}
+        >
+        </ha-icon-button>
+        ${e.map(e=>q`
+        <ha-dropdown-item
+          ?noninteractive=${this.mode==e}
+          ?disabled=${a(e)&&this.mode!=e}
+          value="${e}"
+        >
+          <ha-icon
+            icon="${i[e]}"
+          ></ha-icon>
+          ${t[e]}
+        </ha-dropdown-item>
+        `)}
+      </ha-dropdown>
+    `}}_renderSuffix(){if(this.large){const e=()=>{let e=Le(this.hours).am_pm;const t=Le(this.hours).hours;this.hours=Pe(t,"AM"==e?Me.PM:Me.AM),this._valueChanged()},t=()=>{0!=this.hours?this.hours=-this.hours:this.minutes=-this.minutes,this._valueChanged()},i=()=>{this.mode=this.mode==be.Sunrise?be.Sunset:be.Sunrise,this._valueChanged()};return q`
+        <div class="suffix">
+        ${this.useAmPm&&this.mode==be.Fixed?q`
+            <ha-button appearance="plain" @click=${e}>
+              <span class="large">
+                ${Le(this.hours).am_pm==Me.AM?"AM":"PM"}
+              </span>
+            </ha-button>
+          `:V}
+        ${this.mode!=be.Fixed?q`
+            <ha-button appearance="plain" size="large" @click=${t}>
+              <span class="large">
+              ${this.hours<0||this.minutes<0?this.hass.localize("ui.panel.config.automation.editor.conditions.type.sun.before").trim().toLowerCase():this.hass.localize("ui.panel.config.automation.editor.conditions.type.sun.after").trim().toLowerCase()}
+              </span>
+            </ha-button>
+            <ha-button appearance="plain" @click=${i}>
+              <ha-icon icon="${this.mode==be.Sunrise?"mdi:weather-sunny":"mdi:weather-night"}"></ha-icon>
+            </ha-button>
+         `:V}
+        </div>
+      `}return this.useAmPm&&this.mode==be.Fixed?q`
+        <ha-select
+          .required=${this.required}
+          .value=${Le(this.hours).am_pm==Me.AM?"AM":"PM"}
+          .disabled=${this.disabled}
+          name="amPm"
+          naturalMenuWidth
+          fixedMenuPosition
+          @selected=${this._amPmChanged}
+          @closed=${e=>{e.stopPropagation()}}
+        >
+          <ha-dropdown-item value="AM">AM</ha-dropdown-item>
+          <ha-dropdown-item value="PM">PM</ha-dropdown-item>
+        </ha-select>
+      `:V}_convertTimeMode(e){const t=this.hass.states["sun.sun"].attributes.next_rising,i=this.hass.states["sun.sun"].attributes.next_setting;if(e&&e!=be.Fixed||this.mode==be.Fixed){const s=Ca({hours:this.hours,minutes:this.minutes},t),a=Ca({hours:this.hours,minutes:this.minutes},i),o=60*s.hours+s.minutes,n=60*a.hours+a.minutes;let r=e||(Math.abs(o)<=Math.abs(n)?be.Sunrise:be.Sunset),d=r==be.Sunrise?s:a;return{mode:r,hours:d.hours,minutes:d.minutes}}{let e=this.mode==be.Sunrise?Ce(t):Ce(i);return e=Se(e,{hours:this.hours,minutes:this.minutes}),{mode:be.Fixed,hours:e.hours,minutes:e.minutes}}}_hoursChanged(e){let t=Number(e.target.value);if(this.useAmPm){const e=Le(this.hours).am_pm;t=Pe(t,e)}this.hours=t,this._valueChanged()}_minutesChanged(e){const t=Number(e.target.value);this.minutes=t,this._valueChanged()}_amPmChanged(e){const t=e.detail.value;if(Le(this.hours).am_pm==t)return;const i=Le(this.hours).hours;this.hours=Pe(i,"AM"==t?Me.AM:Me.PM),this._valueChanged()}_addTimeOffset(e){let t={mode:this.mode,hours:this.hours,minutes:this.minutes};t=Se(t,e),e.minutes&&(t=ze(t,this.stepSize)),this.mode!=be.Fixed&&(t=Ta(t)),this.hours=t.hours,this.minutes=t.minutes,this._valueChanged()}_valueChanged(){const e={mode:this.mode,hours:this.hours,minutes:this.minutes};Ts(this,"value-changed",{value:e})}_onFocus(e){e.currentTarget.select()}formatHours(){const e=this.hours<0||this.minutes<0;let t=this.useAmPm&&this.mode==be.Fixed?Le(this.hours).hours:this.hours;return e&&!this.large?"-"+Math.abs(t).toFixed():this.mode==be.Fixed||this.large?this.large?Math.abs(t):t.toFixed():"+"+Math.abs(t).toFixed()}formatMinutes(){return Math.abs(this.minutes).toString().padStart(2,"0")}};Ea.styles=r`
+    :host {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      column-gap: 4px;
+      align-items: center;
+    }
+    .time-input-wrap {
+      display: flex;
+      border-radius: var(--mdc-shape-small, 4px) var(--mdc-shape-small, 4px) 0 0;
+      overflow: hidden;
+      position: relative;
+      direction: ltr;
+    }
+    :host([large]) .time-input-wrap {
+      width: 100%;
+    }
+    div.input {
+      display: flex;
+    }
+    :host([large]) div.input {
+      width: 100%;
+    }
+    div.hours, div.minutes {
+      display: flex;
+      flex-direction: column;
+      width: min-content;
+    }
+    div.hours ha-icon, div.minutes ha-icon {
+      --mdc-icon-size: 42px;
+    }
+    .time-separator {
+      background-color: var(--ha-color-form-background);
+      color: var(--ha-color-text-secondary);
+      border-bottom: 1px solid var(--ha-color-border-neutral-loud);
+      box-sizing: border-box;
+      height: 56px;
+      width: 9px;
+      display: flex;
+      align-items: center;
+      align-self: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 600;
+    }
+    :host([disabled]) .time-separator {
+      background-color: var(--ha-color-form-background-disabled);
+      opacity: 0.5;
+    }
+    :host([large]) .time-separator {
+      background: none;
+      border: none;
+      font-size: 36px;
+    }
+    ha-input {
+      width: 40px;
+      --mdc-shape-small: 0;
+      --text-field-appearance: none;
+      --text-field-padding-top: 0;
+      --text-field-padding-bottom: 0;
+      --text-field-padding-start: 4px;
+      --text-field-padding-end: 4px;
+      --text-field-suffix-padding-left: 2px;
+      --text-field-suffix-padding-right: 0;
+      --ha-input-text-align: center;
+      --ha-input-padding-top: 0px;
+      --ha-input-padding-bottom: 0px;
+    }
+    ha-input::part(wa-input) {
+      text-align: center;
+    }
+    ha-input::part(wa-hint) {
+      height: 0;
+      min-height: 0;
+    }
+    ha-input::part(wa-base) {
+      padding: var(--ha-space-1);
+    }
+    ha-input#hour::part(wa-base) {
+      border-top-right-radius: 0px;
+    }
+    ha-input#min::part(wa-base) {
+      border-top-left-radius: 0px;
+    }
+    :host([large]) ha-input#hour::part(wa-base),
+    :host([large]) ha-input#min::part(wa-base) {
+      border-top-right-radius: var(--ha-border-radius-sm);
+      border-top-left-radius: var(--ha-border-radius-sm);
+    }
+    :host([large]) ha-input {
+      width: 75px;
+      --wa-form-control-value-font-size: 42px;
+    }
+    div.suffix {
+      display: flex;
+      flex-direction: row;
+      flex-grow: 1;
+      align-items: center;
+      flex-wrap: wrap;
+      align-content: center;
+    }
+    div.mode {
+      display: flex;
+      align-items: center;
+    }
+    :host([large]) div.suffix ha-icon, :host([large]) div.mode ha-icon {
+      --mdc-icon-size: 32px;
+    }
+    ha-select {
+      --mdc-shape-small: 0;
+      width: 90px;
+    }
+    .label {
+      display: flex;
+      justify-content: center;
+      align-self: center;
+      white-space: nowrap;
+    }
+    ha-dropdown-menu {
+      display: flex;
+      align-items: flex-end;
+      margin-right: 4px;
+      padding-bottom: 4px;
+    }
+    ha-dropdown-menu ha-icon-button {
+      color: var(--secondary-text-color);
+    }
+    ha-dropdown-item[disabled] ha-icon {
+      color: var(--disabled-text-color);
+    }
+    ha-dropdown-item[noninteractive] {
+      background-color: rgba(var(--rgb-primary-color), 0.12);
+      color: var(--sidebar-selected-text-color);
+    }
+    ha-dropdown-item[noninteractive] ha-icon {
+      color: var(--sidebar-selected-text-color);
+    }
+    ha-button {
+      --ha-button-border-radius: 8px;
+      --button-color-fill-loud-hover: var(--ha-color-primary-50);
+    }
+    ha-button span.large {
+      font-size: 16px;
+      text-transform: uppercase;
+    }
+    @media all and (max-width: 450px), all and (max-height: 500px) {
+      ha-button {
+        --wa-form-control-padding-inline: 10px;
+      }
+    }
+  `,t([le({attribute:!1})],Ea.prototype,"hass",void 0),t([ce()],Ea.prototype,"hours",void 0),t([ce()],Ea.prototype,"minutes",void 0),t([ce()],Ea.prototype,"mode",void 0),t([le({type:Boolean})],Ea.prototype,"autoValidate",void 0),t([le({type:Boolean})],Ea.prototype,"required",void 0),t([le({type:Boolean})],Ea.prototype,"disabled",void 0),t([le({type:String})],Ea.prototype,"label",void 0),t([le({type:Boolean})],Ea.prototype,"useAmPm",void 0),t([le({type:Boolean})],Ea.prototype,"large",void 0),t([le({attribute:!1})],Ea.prototype,"stepSize",void 0),Ea=t([re("scheduler-time-picker")],Ea);let Da=class extends oe{constructor(){super(...arguments),this.weekdayTypeCustomSelected=!1,this.selectedWeekdays=[]}async showDialog(e){this._params=e,await this.updateComplete,this.selectedWeekdays=this._params.weekdays.filter(e=>![pe.Daily,pe.Weekend,pe.Workday].includes(e)),this.weekdayTypeCustomSelected=this.selectedWeekdays.length>0&&this._params.weekdays.length==this.selectedWeekdays.length}async closeDialog(){this._params&&this._params.cancel(),this._params=void 0}render(){return this._params?q`
+      <ha-dialog
+        open
+        @closed=${this.closeDialog}
+        width="small"
+      >
+        <ha-dialog-header slot="header">
+          ${this.weekdayTypeCustomSelected?q`
+          <ha-icon-button
+            slot="navigationIcon"
+            .label=${Xi("ui.dialogs.more_info_control.dismiss",this.hass)}
+            .path=${Ls}
+            @click=${this.backClick}
+          ></ha-icon-button>
+            `:q`
+          <ha-icon-button
+            slot="navigationIcon"
+            data-dialog="close"
+            .label=${Xi("ui.dialogs.more_info_control.dismiss",this.hass)}
+            .path=${Ps}
+          ></ha-icon-button>
+          `};
+          <div slot="title">
+              ${Fi("ui.dialog.weekday_picker.title",this.hass)}
+          </div>
+        </ha-dialog-header>
+        <div class="wrapper">
+          <ha-list>
+          ${this._renderWeekdayOptions()}
+          </ha-list>
+        </div>
+
+        <ha-dialog-footer slot="footer">
+          <ha-button
+            appearance="plain"
+            slot="secondaryAction"
+            @click=${this.cancelClick}
+            data-dialog="close"
+          >
+            ${Xi("ui.common.cancel",this.hass)}
+          </ha-button>
+          <ha-button
+            appearance="accent"
+            slot="primaryAction"
+            @click=${this.confirmClick}
+            data-dialog="close"
+            ?disabled=${!this._params.weekdays.length}
+          >
+            ${Xi("ui.common.ok",this.hass)}
+          </ha-button>
+        </ha-dialog-footer>
+      </ha-dialog>
+    `:q``}_renderWeekdayOptions(){let e=[];if(this.weekdayTypeCustomSelected){e=[pe.Sunday,pe.Monday,pe.Tuesday,pe.Wednesday,pe.Thursday,pe.Friday,pe.Saturday];e=((e,t)=>e.concat(e).slice(t,t+e.length))(e,xs(this.hass))}else e=[pe.Daily,pe.Workday,pe.Weekend,"Custom"];const t=e=>{var t,i;return"Custom"==e?null===(t=this._params)||void 0===t?void 0:t.weekdays.some(e=>![pe.Daily,pe.Weekend,pe.Workday].includes(e)):null===(i=this._params)||void 0===i?void 0:i.weekdays.includes(e)};return e.map(e=>q`
+        <ha-list-item
+          graphic="icon"
+          @click=${this._toggleSelectOption}
+          option="${e}"
+          ?hasMeta=${"Custom"==e}
+        >
+          ${t(e)?q`<ha-icon slot="graphic" icon="mdi:check"></ha-icon>`:""}
+          ${"Custom"==e?q`
+            ${Qi(Fi("ui.dialog.weekday_picker.choose",this.hass))}
+            ${this.selectedWeekdays.length?q`<span class="badge">${this.selectedWeekdays.length}</span>`:""}
+            `:Qi(ks(e,"long",this.hass))}
+
+          ${"Custom"==e?q`<ha-icon slot="meta" icon="mdi:chevron-right"></ha-icon>`:""}
+        </ha-list-item>
+    `)}_toggleSelectOption(e){const t=e.target.getAttribute("option");let i=[...this._params.weekdays];"Custom"==t?(i=this.selectedWeekdays,this.weekdayTypeCustomSelected=!0):[pe.Daily,pe.Weekend,pe.Workday].includes(t)?(i.includes(t)?i.length>1&&(i=i.filter(e=>e!=t)):i=[t],this.weekdayTypeCustomSelected=!1):i=i.includes(t)?i.filter(e=>e!=t):[...i,t],this._params=Object.assign(this._params,{weekdays:i}),e.target.blur(),this.requestUpdate()}confirmClick(){const e=Array.from(new Set(this._params.weekdays));this._params.confirm(e)}cancelClick(){this._params.cancel()}backClick(){this.weekdayTypeCustomSelected=!1,this.selectedWeekdays=this._params.weekdays.filter(e=>![pe.Daily,pe.Weekend,pe.Workday].includes(e))}static get styles(){return r`
+      div.wrapper {
+        color: var(--primary-text-color);
+        padding: 0px 12px;
+      }
+      ha-list {
+        --mdc-list-vertical-padding: 0px;
+      }
+      ha-list-item[disabled] {
+        color: var(--disabled-text-color);
+      }
+      ha-list-item.nested {
+        --mdc-list-side-padding: 36px;
+      }
+      .badge {
+        height: 24px;
+        border-radius: 12px;
+        background: rgba(var(--rgb-primary-color), 0.3);
+        line-height: 1.25rem;
+        font-size: 0.875rem;
+        font-weight: 400;
+        padding: 0px 12px;
+        display: inline-flex;
+        align-items: center;
+        box-sizing: border-box;
+        margin: 0px 16px;
+      }
+    `}};t([le({attribute:!1})],Da.prototype,"hass",void 0),t([ce()],Da.prototype,"_params",void 0),t([ce()],Da.prototype,"weekdayTypeCustomSelected",void 0),t([ce()],Da.prototype,"selectedWeekdays",void 0),Da=t([re("dialog-select-weekdays")],Da);var Ma=Object.freeze({__proto__:null,get DialogSelectWeekdays(){return Da}});const La=(e,t)=>((e,t)=>e<t?-1:e>t?1:0)(e.toLowerCase(),t.toLowerCase()),Pa=(e,t,i)=>{const s=Object.keys(e.services).includes(t)?Object.keys(e.services[t]).filter(e=>{if(!Object.keys(ts).includes(t))return!1;let s=Object.keys(ts[t]).includes(e);if(!s&&Object.keys(ts[t]).includes("{entity_id}")){if("script"==t&&["turn_on","turn_off","reload","toggle","test"].includes(e))return!1;s=Gi(`${t}.${e}`,i)}return s}):[],a=t=>Xi(`component.${t}.title`,e,!1)||t.replace(/_/g," "),o=s=>{let o=Qi(fs({service:`${t}.${s}`,service_data:{}},e,i.customize));return"script"==t?Object.keys(i.customize||{}).includes(`${t}.${s}`)&&Be(i.customize[`${t}.${s}`].name)?i.customize[`${t}.${s}`].name:`${Qi(Os(`${t}.${s}`,e,i.customize))}: ${o}`:`${a(t)}: ${o}`},n=i=>{let s=Xi(`component.${t}.services.${i}.description`,e,!1);return s||(s=e.services[t][i].description),s||"script"!=t||(s=Xi(`component.${t}.services.turn_on.description`,e,!1)),s};let r=s.map(s=>{return{key:s,name:o(s),description:n(s),icon:(a=s,"script"==t&&Object.keys(i.customize||{}).includes(`${t}.${a}`)&&Be(i.customize[`${t}.${a}`].icon)?i.customize[`${t}.${a}`].icon:Object.keys(cs).includes(t)&&Object.keys(cs[t].services).includes(a)?cs[t].services[a]:Vs(t)),action:{service:s.includes(".")?s:`${t}.${s}`,service_data:{},target:e.services[t][s].target?{}:void 0}};var a}),d=(l=i.customize||{},c=t,Object.keys(l).filter(e=>{var t;return null===(t=l[e].exclude_actions)||void 0===t?void 0:t.length}).filter(e=>!c||!c.includes(".")&&Ki(Wi(e),c)||Ki(e,c)).map(e=>l[e].exclude_actions).flat().filter(Be));var l,c;return d.length&&(r=r.filter(t=>!d.some(s=>La(Bi(t.action.service),s)>0||La(fs(t.action,e,i.customize),s)>0))),os(i.customize||{},t).forEach(e=>{let i=e.service;for(;r.find(e=>e.key==i);)i+="_2";e.variables&&Object.entries(e.variables).forEach(([t,i])=>{let s=ps(i),a=xa(s);!Be(e.service_data[t])&&Be(a)?e=Object.assign(Object.assign({},e),{service_data:Object.assign(Object.assign({},e.service_data),{[t]:a})}):Be(e.service_data[t])||(e=Object.assign(Object.assign({},e),{service_data:Object.assign(Object.assign({},e.service_data),{[t]:null})}))}),r.push({key:i,name:`${a(t)}: ${Na(e.name||o(Bi(e.service)))}`,description:Na(e.name||""),icon:e.icon||Vs(t),action:{service:e.service.includes(".")?e.service:`${t}.${e.service}`,service_data:e.service_data||{},target:e.target?e.target:void 0,name:e.name,icon:e.icon}})}),r},Na=e=>{if(null!==/<.+?>/g.exec(e)){e=(new DOMParser).parseFromString(e,"text/html").body.textContent||""}let t;for(;t=/\[([^\]]+)\]/.exec(e);)e=e.replace(t[0],"");for(;t=/\{([^\}]+)\}/.exec(e);)e=e.replace(t[0],"");return e};let Ia=class extends oe{constructor(){super(...arguments),this._search="",this._filter="",this.timer=0,this.lockDomain=!1,this.showAll=!1}async showDialog(e){this._params=e,this.lockDomain=void 0!==e.domainFilter,this.showAll=!1,await this.updateComplete}async closeDialog(){this._params&&this._params.cancel(),this._params=void 0,this._clearSearch(),this._height=void 0,this._width=void 0}async willUpdate(){this.hass.loadBackendTranslation("title"),this.hass.loadBackendTranslation("services")}render(){return this._params?q`
+      <ha-dialog
+        open
+        @closed=${this.closeDialog}
+        @wa-after-show=${this._opened}
+      >
+        <div slot="header">
+          <ha-dialog-header>
+            ${void 0===this._params.domainFilter||this.lockDomain?q`
+            <ha-icon-button
+              slot="navigationIcon"
+               data-dialog="close"
+              .label=${Xi("ui.dialogs.more_info_control.dismiss",this.hass)}
+              .path=${Ps}
+            ></ha-icon-button>
+            `:q`
+            <ha-icon-button
+              slot="navigationIcon"
+              .label=${Xi("ui.common.back",this.hass)}
+              .path=${Ls}
+              @click=${this._clearDomain}
+            ></ha-icon-button>
+            `}
+            <div slot="title">
+              ${Fi("ui.dialog.action_picker.title",this.hass)}
+            </div>
+            ${!this.lockDomain&&Be(this._params.cardConfig.include)?q`
+            <ha-dropdown
+              placement="bottom-end"
+              slot="actionItems"
+              @wa-after-hide=${e=>{e.target.firstElementChild.blur()}}
+            >
+              <ha-icon-button slot="trigger" .label=${this.hass.localize("ui.common.menu")} .path=${Ns}>
+              </ha-icon-button>
+              <ha-dropdown-item @click=${this._toggleShowAll}>
+                <ha-icon
+                  icon="mdi:check"
+                  style="${this.showAll?"":"visibility: hidden"}"
+                ></ha-icon>
+                ${Fi("ui.dialog.action_picker.show_all",this.hass)}
+              </ha-dropdown-item>
+            </ha-dropdown>`:""}
+          </ha-dialog-header>
+
+          <ha-input
+            dialogInitialFocus
+            .placeholder=${Xi("ui.common.search",this.hass)}
+            aria-label=${Xi("ui.common.search",this.hass)}
+            @input=${this._handleSearchChange}
+            .value=${this._search}
+            icon
+            .iconTrailing=${this._search}
+          >
+            <div class="trailing" slot="trailingIcon">
+              ${this._search&&q`
+                <ha-icon-button
+                  @click=${this._clearSearch}
+                  .label=${Xi("ui.common.clear",this.hass)}
+                  .path=${Ps}
+                  class="clear-button"
+                ></ha-icon-button>
+              `}
+              <slot name="suffix"></slot>
+            </div>
+          </ha-input>
+        </div>
+        
+        <ha-list
+          style=${Zs({minWidth:this._width+"px",height:this._height?Math.min(468,this._height)+"px":"auto"})}
+        >
+          ${this._renderOptions()}
+        </ha-list>
+      </ha-dialog>
+    `:q``}_opened(){var e;const t=null===(e=this.shadowRoot.querySelector("ha-list"))||void 0===e?void 0:e.getBoundingClientRect();this._width=null==t?void 0:t.width,this._height=null==t?void 0:t.height}_handleSearchChange(e){const t=e.currentTarget.value;this._search=t,clearTimeout(this.timer),this.timer=window.setTimeout(()=>{this._filter=this._search},100)}_renderOptions(){var e,t;if(null===(e=this._params)||void 0===e?void 0:e.domainFilter)return this._renderDomainActions();let i=Object.assign({},null===(t=this._params)||void 0===t?void 0:t.cardConfig);this.showAll&&(i=Object.assign(Object.assign({},i),{include:void 0,exclude:void 0}));const s=Hs(this.hass,i);return 1===s.length?(this._params=Object.assign(Object.assign({},this._params),{domainFilter:[s[0].key]}),this._renderDomainActions()):this._renderDomainList(s)}_renderDomainList(e){e.sort((e,t)=>Yi(e.name,t.name)),this._filter&&(e=e.filter(e=>{const t=this._filter.toLowerCase().trim().split(" ");return t.every(t=>e.name.toLowerCase().includes(t))||t.every(t=>e.key.toLowerCase().includes(t))}));let t=[];for(var i=e.length;i<7;i++)t.push(0);return Object.keys(e).length?q`
+      ${Object.keys(e).map(t=>q`
+        <ha-list-item
+          graphic="icon"
+          hasMeta
+          @click=${()=>this._handleDomainClick(e[t].key)}
+        >
+          <ha-icon slot="graphic" icon="${e[t].icon}"></ha-icon>
+          <ha-icon slot="meta" icon="mdi:chevron-right"></ha-icon>
+          <span>${e[t].name}</span>
+        </ha-list-item>`)}
+        ${t.map(e=>q`
+        <ha-list-item
+          graphic="icon"
+          hasMeta
+          noninteractive
+        >
+        </ha-list-item>
+        `)}
+      `:q`
+          <ha-list-item disabled>
+            ${Xi("ui.components.combo-box.no_match",this.hass)}
+          </ha-list-item>
+        `}_renderDomainActions(){var e,t;let i=Object.assign({},null===(e=this._params)||void 0===e?void 0:e.cardConfig);this.showAll&&(i=Object.assign(Object.assign({},i),{include:void 0,exclude:void 0}));let s=this._params.domainFilter.map(e=>Pa(this.hass,e,i)).flat();return(null===(t=this._params.entityFilter)||void 0===t?void 0:t.length)&&(s=s.filter(e=>{var t;return null===(t=this._params.entityFilter)||void 0===t?void 0:t.every(t=>{const i=ns(e.action,this._params.cardConfig.customize),s=this.hass.states[t];return!(i.supported_features&&!((s.attributes.supported_features||0)&i.supported_features))&&((!Object.keys(e.action.service_data).includes("entity_id")||e.action.service_data.entity_id==t)&&(!Object.keys(e.action.target||{}).includes("entity_id")||(e.action.target||{}).entity_id==t))})})),this._filter&&(s=s.filter(e=>{const t=this._filter.toLowerCase().trim().split(" ");return t.every(t=>e.name.toLowerCase().includes(t))||t.every(t=>e.key.toLowerCase().includes(t))})),Object.keys(s).length?Object.keys(s).map(e=>q`
+        <ha-list-item
+          graphic="icon"
+          @click=${()=>this._handleActionClick(s[e])}
+          twoline
+        >
+          <ha-icon slot="graphic" icon="${s[e].icon}"></ha-icon>
+          <span>${s[e].name}</span>
+          <span slot="secondary">${s[e].description}</span>
+        </ha-list-item>
+    `):q`
+          <ha-list-item disabled>
+            ${Xi("ui.components.combo-box.no_match",this.hass)}
+          </ha-list-item>
+        `}_handleDomainClick(e){this._params=Object.assign(Object.assign({},this._params),{domainFilter:[e]}),this._clearSearch()}_clearDomain(){this._params=Object.assign(Object.assign({},this._params),{domainFilter:void 0}),this._clearSearch()}_handleActionClick(e){this._params.confirm(e.action),this._params=void 0,this._clearSearch()}_clearSearch(){this._search="",this._filter=""}_toggleShowAll(){this.showAll?this.showAll=!1:(this.showAll=!0,this.lockDomain||this._clearDomain())}static get styles(){return r`
+      ha-dialog {
+        --dialog-content-padding: 0;
+        --ha-dialog-width-md: 480px;
+      }
+      ha-input {
+        display: block;
+        margin: 0 16px;
+      }
+      ha-list {
+        min-height: 300px;
+      }
+      ha-list-item:not([twoline]) {
+        height: 56px;
+      }
+    `}};t([le({attribute:!1})],Ia.prototype,"hass",void 0),t([ce()],Ia.prototype,"_params",void 0),t([ce()],Ia.prototype,"_search",void 0),t([ce()],Ia.prototype,"_filter",void 0),t([ce()],Ia.prototype,"_width",void 0),t([ce()],Ia.prototype,"_height",void 0),t([ce()],Ia.prototype,"lockDomain",void 0),t([ce()],Ia.prototype,"showAll",void 0),Ia=t([re("dialog-select-action")],Ia);var qa=Object.freeze({__proto__:null,get DialogSelectAction(){return Ia}});let Ra=class extends oe{constructor(){super(...arguments),this.showPrefix=!1}render(){return q`
+      ${this.showPrefix?q`
+      <div class="prefix-wrap">
+        <div class="prefix"><slot name="prefix"></slot></div>
+        <div class="body">
+          <div class="heading"><slot name="heading"></slot></div>
+          <div class="secondary"><slot name="description"></slot></div>
+        </div>
+      </div>
+      `:q`
+      <div class="body">
+        <div class="heading"><slot name="heading"></slot></div>
+        <div class="secondary"><slot name="description"></slot></div>
+      </div>
+      `}
+      <div class="content"><slot></slot></div>
+    `}static get styles(){return r`
+
+    :host {
+      display: flex;
+      padding: 0px;
+      align-content: normal;
+      align-self: auto;
+      align-items: center;
+    }
+    .body {
+      padding-top: 0px;
+      padding-bottom: 0px;
+      padding-left: 0;
+      padding-inline-start: 0;
+      padding-right: 16x;
+      padding-inline-end: 16px;
+      overflow: hidden;
+      align-content: center;
+    }
+    .body > * {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .content {
+      display: flex;
+      justify-content: flex-end;
+      flex: 1;
+      padding: 8px 0;
+    }
+    // .content ::slotted(*) {
+    //   width: var(--settings-row-content-width);
+    // }
+    .prefix-wrap {
+      display: flex;
+      flex-direction: row;
+    }
+    .prefix {
+      display: flex;
+      width: 48px;
+    }
+    .heading, .heading ::slotted(*) {
+      display: flex;
+      align-items: center;
+      width: 150px;
+    }
+    @media all and (max-width: 450px) {
+      :host {
+        align-items: normal;
+        flex-direction: column;
+        border-top: 1px solid var(--divider-color);
+        padding: 8px 16px;
+      }
+      .prefix-wrap {
+        display: flex;
+        align-items: center;
+      }
+      .content ::slotted(*) {
+        width: 100%;
+      }
+    `}};t([le({type:Boolean})],Ra.prototype,"showPrefix",void 0),Ra=t([re("scheduler-settings-row")],Ra);let Va=class extends oe{constructor(){super(...arguments),this.selectedSlot=null,this.large=!1,this.selectedEntry=0}shouldUpdate(e){return e.get("schedule")&&this.dispatchEvent(new CustomEvent("change",{detail:{schedule:this.schedule}})),!0}render(){return this.config.simple_editor?q`
     ${this.schedule.entries.map((e,t)=>q`
       <div class="editor-header">
         <div class="weekdays">
@@ -247,7 +1983,68 @@ var se,ae;class oe extends f{constructor(){super(...arguments),this.renderOption
       ${this.renderSlot()}
       `:q``}
     `)}
-    `}_getSlotStop(e,t){const i=e.slots[t],s=t===e.slots.length-1;let a=i.stop;return!a&&!s&&(a=e.slots[t+1].start),a||(a=i.start),a}_formatSlotTime(e){return e?e.slice(0,5):"--:--"}_describeSlotAction(e){const t=e.actions&&e.actions.length?e.actions[0]:void 0;if(!t)return"未設定";const i=Wi(t.service);return"script"===i?Os(t.service,this.hass,this.config.customize)||"未設定":Qi(fs(t,this.hass,this.config.customize,!1,!0))||"未設定"}_selectSlot(e,t){this.selectedEntry=e,this._updateSelectedSlot(t)}renderSlot(){if(null===this.selectedEntry||null===this.selectedSlot)return q`
+    `:q`
+    ${this.schedule.entries.map((e,t)=>q`
+      
+      <div class="editor-header">
+        <div class="weekdays">
+          <span>
+            ${Fi("ui.panel.editor.repeated_days",this.hass)}:
+            ${js(e.weekdays,"short",this.hass)}
+          </span>
+          <ha-icon-button .path=${Is} @click=${e=>this._showWeekdayDialog(e,t)}></ha-icon-button>
+        </div>
+        <div class="weekdays-actions">
+        <ha-button appearance="plain" size="small" @click=${this.toggleViewMode}>
+          ${this.viewMode==me.Scheme?Fi("ui.panel.editor.toggle_single_mode",this.hass):Fi("ui.panel.editor.toggle_scheme_mode",this.hass)}
+          <ha-icon slot="end" icon="mdi:swap-horizontal"></ha-icon>
+        </ha-button>
+        </div>
+      </div>
+
+      ${this.viewMode==me.Scheme?q`
+      <div class="editor-header">
+        <div class="weekdays">
+          ${this.hass.localize("ui.dialogs.helper_settings.input_datetime.time")}:
+        </div>
+        ${this.renderActionButtons()}
+      </div>
+      <scheduler-timeslot-editor
+        .hass=${this.hass}
+        .config=${this.config}
+        .schedule=${e}
+        .selectedSlot=${this.selectedSlot}
+        @update=${e=>this._handleUpdate(e,t)}
+        .large=${this.large}
+      >
+      </scheduler-timeslot-editor>
+      `:q`
+          ${this.hass.localize("ui.dialogs.helper_settings.input_datetime.time")}:
+          <scheduler-time-picker
+            .hass=${this.hass}
+            .time=${this.schedule.entries[this.selectedEntry].slots[this.selectedSlot].start}
+            @value-changed=${this._startTimeChanged}
+            ?useAmPm=${De(this.hass.locale)}
+            .stepSize=${this.config.time_step||15}
+            large
+          >
+          </scheduler-time-picker>
+      `}
+    `)}
+
+    ${this.renderSlot()}
+    `}_getSlotStop(e,t){const i=e.slots[t],s=t===e.slots.length-1;let a=i.stop;return!a&&!s&&(a=e.slots[t+1].start),a||(a=i.start),a}_formatSlotTime(e){return e?e.slice(0,5):"--:--"}_describeSlotAction(e){const t=e.actions&&e.actions.length?e.actions[0]:void 0;if(!t)return"未設定";const i=Wi(t.service);return"script"===i?Os(t.service,this.hass,this.config.customize)||"未設定":Qi(fs(t,this.hass,this.config.customize,!1,!0))||"未設定"}_selectSlot(e,t){this.selectedEntry=e,this._updateSelectedSlot(t)}toggleViewMode(){const e=this.viewMode==me.Scheme?me.Single:me.Scheme;this.dispatchEvent(new CustomEvent("setViewMode",{detail:e}))}renderActionButtons(){if(null===this.selectedSlot||null===this.selectedEntry)return q``;const e=this.schedule.entries[this.selectedEntry].slots[this.selectedSlot].start,t=this.schedule.entries[this.selectedEntry].slots[this.selectedSlot].stop||e,i=Ae(e,this.hass),s=(Ae(t,this.hass)||86400)-i;return q`
+      <div class="actions">
+        <ha-icon-button .path=${Ls} @click=${e=>{this._updateSelectedSlot(this.selectedSlot-1),e.target.blur()}} ?disabled=${null===this.selectedSlot||this.selectedSlot<1}>
+        </ha-icon-button> 
+        <ha-icon-button .path=${"M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"} @click=${e=>{this._updateSelectedSlot(this.selectedSlot+1),e.target.blur()}} ?disabled=${null===this.selectedSlot||this.selectedSlot>this.schedule.entries[this.selectedEntry].slots.length-2}>
+        </ha-icon-button> 
+        <ha-icon-button .path=${"M19,6H22V8H19V11H17V8H14V6H17V3H19V6M17,17V14H19V19H3V6H11V8H5V17H17Z"} @click=${this._addTimeslot} ?disabled=${s<1800}>
+        </ha-icon-button>
+        <ha-icon-button .path=${"M9,3V4H4V6H5V19A2,2 0 0,0 7,21H17A2,2 0 0,0 19,19V6H20V4H15V3H9M7,6H17V19H7V6M9,8V17H11V8H9M13,8V17H15V8H13Z"} @click=${this._removeTimeslot} ?disabled=${this.schedule.entries[this.selectedEntry].slots.length<=2}>
+        </ha-icon-button> 
+      </div>
+    `}renderSlot(){if(null===this.selectedEntry||null===this.selectedSlot)return q`
         <div class="slot-placeholder"> 
           ${Fi("ui.panel.editor.select_timeslot",this.hass)}
         </div>
