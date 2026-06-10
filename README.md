@@ -7,7 +7,7 @@ This repo contains a reusable Home Assistant frontend plugin derived from `sched
 - Traditional Chinese UI patching
 - Strong selected-timeslot highlight color
 - Action row shows selected script name instead of icon-only display
-- Optional `simple_editor: true` mode for customer-facing schedule editing
+- Customer-facing simplified editor enabled by default
 - Designed to coexist with the original HACS `scheduler-card`
 
 ## Files
@@ -45,11 +45,20 @@ python3 scripts/build_independent_bundle.py
 type: custom:gs-scheduler-card
 ```
 
-For the simplified customer-facing editor:
+By default, `GS Scheduler Card` opens the schedule editor in the simplified customer-facing mode.
+
+If you want to be explicit:
 
 ```yaml
 type: custom:gs-scheduler-card
 simple_editor: true
+```
+
+To fall back to the more advanced/original editing workflow:
+
+```yaml
+type: custom:gs-scheduler-card
+simple_editor: false
 ```
 
 ## Reuse the farm schedule UI on another host
