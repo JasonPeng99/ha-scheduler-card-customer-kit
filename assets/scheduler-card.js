@@ -2049,7 +2049,7 @@ var se,ae;class oe extends f{constructor(){super(...arguments),this.renderOption
         ?expanded=${!0}
         ?disabled=${!0}
       >
-        <div slot="header" class="header" @click=${this._showActionDialog}>
+        <div slot="header" class="header">
           <ha-icon slot="icon" icon="${$a(o,this.config.customize)}"></ha-icon>
           <span>${Qi(c)}</span>
         </div>

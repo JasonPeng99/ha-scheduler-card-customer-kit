@@ -2046,10 +2046,11 @@ var se,ae;class oe extends f{constructor(){super(...arguments),this.renderOption
       </div>
     `;const n=ns(o,this.config.customize),r=(null===(e=n.target)||void 0===e?void 0:e.domain)||Wi(o.service),d=Be(null===(t=null==n?void 0:n.target)||void 0===t?void 0:t.entity_id)||this.schedule.entries[this.selectedEntry].slots.some(e=>{var t,i;return e.actions.length&&Be(null===(i=null===(t=ns(e.actions[0],this.config.customize))||void 0===t?void 0:t.target)||void 0===i?void 0:i.entity_id)});if(void 0===n)return q``;const l=Object.keys(n.fields||{}).filter(e=>_a(o,e,this.hass,this.config.customize));let c="";return c+="script"===r?Os(o.service,this.hass,this.config.customize):fs(o,this.hass,this.config.customize,!1,!0),q`
       <gs-scheduler-collapsible-section
+        @click=${this._showActionDialog}
         ?expanded=${!0}
         ?disabled=${!0}
       >
-        <div slot="header" class="header" @click=${this._showActionDialog}>
+        <div slot="header" class="header">
           <ha-icon slot="icon" icon="${$a(o,this.config.customize)}"></ha-icon>
           <span>${Qi(c)}</span>
         </div>
