@@ -33,6 +33,20 @@ Run this locally after updating `assets/scheduler-card.js`:
 python3 scripts/build_independent_bundle.py
 ```
 
+Then always validate the bundle before releasing:
+
+```bash
+node --check assets/scheduler-card.js
+node --check gs-scheduler-card.js
+node scripts/check_bundle_registration.js gs-scheduler-card.js gs-scheduler-card
+```
+
+If you need to replace customer-facing Chinese text safely, prefer:
+
+```bash
+python scripts/utf8_replace.py <file> <old> <new>
+```
+
 ## Install with HACS
 
 1. Add this repository as a custom repository in HACS
@@ -96,3 +110,4 @@ If the page still looks unchanged, fully close and reopen the browser tab.
 - This plugin coexists with the original card because all custom elements and the Lovelace card type are renamed to the `gs-` prefix
 - The repo now enforces UTF-8 plus LF through `.editorconfig` and `.gitattributes`
 - When editing customer-facing Chinese text, prefer UTF-8-safe file writes over shell heredocs that depend on terminal codepages
+- See [WORKFLOW.md](/C:/Users/bbman/OneDrive/文件/Building/scheduler-card-customer-kit/WORKFLOW.md) for the release and validation checklist
