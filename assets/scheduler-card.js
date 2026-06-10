@@ -1941,7 +1941,49 @@ var se,ae;class oe extends f{constructor(){super(...arguments),this.renderOption
       .content ::slotted(*) {
         width: 100%;
       }
-    `}};t([le({type:Boolean})],Ra.prototype,"showPrefix",void 0),Ra=t([re("scheduler-settings-row")],Ra);let Va=class extends oe{constructor(){super(...arguments),this.selectedSlot=null,this.large=!1,this.selectedEntry=0}shouldUpdate(e){return e.get("schedule")&&this.dispatchEvent(new CustomEvent("change",{detail:{schedule:this.schedule}})),!0}render(){return q`
+    `}};t([le({type:Boolean})],Ra.prototype,"showPrefix",void 0),Ra=t([re("scheduler-settings-row")],Ra);let Va=class extends oe{constructor(){super(...arguments),this.selectedSlot=null,this.large=!1,this.selectedEntry=0}shouldUpdate(e){return e.get("schedule")&&this.dispatchEvent(new CustomEvent("change",{detail:{schedule:this.schedule}})),!0}render(){return this.config.simple_editor?q`
+    ${this.schedule.entries.map((e,t)=>q`
+      <div class="editor-header">
+        <div class="weekdays">
+          <span>
+            ${Fi("ui.panel.editor.repeated_days",this.hass)}:
+            ${js(e.weekdays,"short",this.hass)}
+          </span>
+          <ha-icon-button .path=${Is} @click=${e=>this._showWeekdayDialog(e,t)}></ha-icon-button>
+        </div>
+      </div>
+
+      <div class="simple-slot-list">
+        ${e.slots.map((i,s)=>q`
+          <button
+            class="simple-slot-row ${this.selectedEntry===t&&this.selectedSlot===s?"selected":""}"
+            @click=${()=>this._selectSlot(t,s)}
+          >
+            <span class="simple-slot-time">${this._formatSlotTime(i.start)} - ${this._formatSlotTime(this._getSlotStop(e,s))}</span>
+            <span class="simple-slot-action">${this._describeSlotAction(i)}</span>
+          </button>
+        `)}
+      </div>
+
+      ${this.selectedEntry===t?q`
+      <div class="simple-ops">
+        <ha-button appearance="plain" @click=${e=>{this.selectedEntry=t,this._addTimeslot(e)}}>
+          <ha-icon slot="start" icon="mdi:plus"></ha-icon>
+          新增一段
+        </ha-button>
+        <ha-button
+          appearance="plain"
+          @click=${e=>{this.selectedEntry=t,this._removeTimeslot(e)}}
+          ?disabled=${null===this.selectedSlot||e.slots.length<=2}
+        >
+          <ha-icon slot="start" icon="mdi:delete-outline"></ha-icon>
+          刪除此段
+        </ha-button>
+      </div>
+      ${this.renderSlot()}
+      `:q``}
+    `)}
+    `:q`
     ${this.schedule.entries.map((e,t)=>q`
       
       <div class="editor-header">
@@ -1991,7 +2033,7 @@ var se,ae;class oe extends f{constructor(){super(...arguments),this.renderOption
     `)}
 
     ${this.renderSlot()}
-    `}toggleViewMode(){const e=this.viewMode==me.Scheme?me.Single:me.Scheme;this.dispatchEvent(new CustomEvent("setViewMode",{detail:e}))}renderActionButtons(){if(null===this.selectedSlot||null===this.selectedEntry)return q``;const e=this.schedule.entries[this.selectedEntry].slots[this.selectedSlot].start,t=this.schedule.entries[this.selectedEntry].slots[this.selectedSlot].stop||e,i=Ae(e,this.hass),s=(Ae(t,this.hass)||86400)-i;return q`
+    `}_getSlotStop(e,t){const i=e.slots[t],s=t===e.slots.length-1;let a=i.stop;return!a&&!s&&(a=e.slots[t+1].start),a||(a=i.start),a}_formatSlotTime(e){return e?e.slice(0,5):"--:--"}_describeSlotAction(e){const t=e.actions&&e.actions.length?e.actions[0]:void 0;if(!t)return"未設定";const i=Wi(t.service);return"script"===i?Os(t.service,this.hass,this.config.customize)||"未設定":Qi(fs(t,this.hass,this.config.customize,!1,!0))||"未設定"}_selectSlot(e,t){this.selectedEntry=e,this._updateSelectedSlot(t)}toggleViewMode(){const e=this.viewMode==me.Scheme?me.Single:me.Scheme;this.dispatchEvent(new CustomEvent("setViewMode",{detail:e}))}renderActionButtons(){if(null===this.selectedSlot||null===this.selectedEntry)return q``;const e=this.schedule.entries[this.selectedEntry].slots[this.selectedSlot].start,t=this.schedule.entries[this.selectedEntry].slots[this.selectedSlot].stop||e,i=Ae(e,this.hass),s=(Ae(t,this.hass)||86400)-i;return q`
       <div class="actions">
         <ha-icon-button .path=${Ls} @click=${e=>{this._updateSelectedSlot(this.selectedSlot-1),e.target.blur()}} ?disabled=${null===this.selectedSlot||this.selectedSlot<1}>
         </ha-icon-button> 
@@ -2148,6 +2190,50 @@ var se,ae;class oe extends f{constructor(){super(...arguments),this.renderOption
     display: flex;
     align-items: center;
   }
+  .simple-slot-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 12px 0 16px 0;
+  }
+  .simple-slot-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    text-align: left;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(var(--rgb-primary-text-color), 0.12);
+    background: rgba(var(--rgb-primary-text-color), 0.03);
+    color: var(--primary-text-color);
+    cursor: pointer;
+    font: inherit;
+  }
+  .simple-slot-row:hover {
+    background: rgba(var(--rgb-primary-color), 0.08);
+  }
+  .simple-slot-row.selected {
+    border-color: var(--primary-color);
+    background: rgba(var(--rgb-primary-color), 0.16);
+    box-shadow: inset 0 0 0 1px rgba(var(--rgb-primary-color), 0.28);
+  }
+  .simple-slot-time {
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .simple-slot-action {
+    color: var(--secondary-text-color);
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .simple-ops {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0 0 12px 0;
+  }
   div.actions {
     display: flex;
     align-items: end;
@@ -2160,6 +2246,10 @@ var se,ae;class oe extends f{constructor(){super(...arguments),this.renderOption
     }
     div.actions {
       align-self: flex-end;
+    }
+    .simple-slot-row {
+      flex-direction: column;
+      align-items: flex-start;
     }
   }
   div.slot-placeholder {
