@@ -18,11 +18,43 @@ class GsScheduleSummaryCard extends HTMLElement {
 
   _friendlyAction(service) {
     if (!service || !this._hass) return "未設定";
+
+    const explicitMap = {
+      "homeassistant.turn_on": "開啟",
+      "homeassistant.turn_off": "關閉",
+      "switch.turn_on": "開啟",
+      "switch.turn_off": "關閉",
+      "fan.turn_on": "開啟",
+      "fan.turn_off": "關閉",
+      "light.turn_on": "開啟",
+      "light.turn_off": "關閉",
+      "script.turn_on": "執行",
+      "script.reload": "重新載入",
+    };
+
+    if (explicitMap[service]) {
+      return explicitMap[service];
+    }
+
     const state = this._hass.states[service];
     if (state?.attributes?.friendly_name) {
       return state.attributes.friendly_name;
     }
-    return service;
+
+    const action = String(service).split(".").pop();
+    const suffixMap = {
+      turn_on: "開啟",
+      turn_off: "關閉",
+      toggle: "切換",
+      open_cover: "開啟",
+      close_cover: "關閉",
+      start: "啟動",
+      stop: "停止",
+      pause: "暫停",
+      start_pause: "啟動 / 暫停",
+    };
+
+    return suffixMap[action] || service;
   }
 
   _formatRows() {
@@ -90,7 +122,7 @@ class GsScheduleSummaryCard extends HTMLElement {
         th, td {
           text-align: left;
           padding: 8px 6px;
-          border-bottom: 1px solid rgba(127,127,127,0.18);
+          border-bottom: 1px solid rgba(127, 127, 127, 0.18);
           vertical-align: top;
         }
         th {
