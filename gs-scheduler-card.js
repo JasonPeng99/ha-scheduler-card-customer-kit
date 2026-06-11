@@ -1949,7 +1949,7 @@ var se,ae;class oe extends f{constructor(){super(...arguments),this.renderOption
       </div>
 
       <div class="simple-slot-list">
-        ${e.slots.map((i,s)=>({slot:i,idx:s})).filter(({slot:s,idx:a})=>s.actions.length||a>0&&a<e.slots.length-1).map(({slot:i,idx:s})=>q`
+        ${e.slots.map((i,s)=>({slot:i,idx:s})).filter(({slot:s})=>s.actions.length).map(({slot:i,idx:s})=>q`
           <button
             class="simple-slot-row ${this.selectedEntry===t&&this.selectedSlot===s?"selected":""}"
             @click=${()=>this._selectSlot(t,s)}
@@ -1958,6 +1958,7 @@ var se,ae;class oe extends f{constructor(){super(...arguments),this.renderOption
             <span class="simple-slot-action">${this._describeSlotAction(i)}</span>
           </button>
         `)}
+        ${e.slots.some(e=>e.actions.length)?V:q`<div class="slot-placeholder">尚無已設定排程段</div>`}
       </div>
 
       ${this.selectedEntry===t?q`
