@@ -3051,9 +3051,7 @@ class GsScheduleSummaryCard extends HTMLElement {
       "script.reload": "重新載入",
     };
 
-    if (explicitMap[service]) {
-      return explicitMap[service];
-    }
+    if (explicitMap[service]) return explicitMap[service];
 
     const state = this._hass.states[service];
     if (state?.attributes?.friendly_name) {
@@ -3095,9 +3093,9 @@ class GsScheduleSummaryCard extends HTMLElement {
       const isCurrent = current === idx;
       return `
         <tr class="${isCurrent ? "current" : ""}">
-          <td>${isCurrent ? "👉 目前" : ""}</td>
-          <td>${isCurrent ? `<strong>${short}</strong>` : short}</td>
-          <td>${isCurrent ? `<strong>${action}</strong>` : action}</td>
+          <td class="status">${isCurrent ? "👉 目前" : ""}</td>
+          <td class="time">${isCurrent ? `<strong>${short}</strong>` : short}</td>
+          <td class="action">${isCurrent ? `<strong>${action}</strong>` : action}</td>
         </tr>
       `;
     }).join("");
@@ -3106,9 +3104,9 @@ class GsScheduleSummaryCard extends HTMLElement {
       <table>
         <thead>
           <tr>
-            <th>狀態</th>
-            <th>時段</th>
-            <th>動作</th>
+            <th class="status">狀態</th>
+            <th class="time">時段</th>
+            <th class="action">動作</th>
           </tr>
         </thead>
         <tbody>${rows}</tbody>
@@ -3121,7 +3119,9 @@ class GsScheduleSummaryCard extends HTMLElement {
     if (!this.shadowRoot) {
       this.attachShadow({ mode: "open" });
     }
+
     const title = this._config.title || "排程總攬";
+
     this.shadowRoot.innerHTML = `
       <style>
         ha-card {
@@ -3136,9 +3136,11 @@ class GsScheduleSummaryCard extends HTMLElement {
         table {
           width: 100%;
           border-collapse: collapse;
+          table-layout: fixed;
           font-size: 0.95rem;
         }
-        th, td {
+        th,
+        td {
           text-align: left;
           padding: 8px 6px;
           border-bottom: 1px solid rgba(127, 127, 127, 0.18);
@@ -3148,13 +3150,19 @@ class GsScheduleSummaryCard extends HTMLElement {
           color: var(--secondary-text-color);
           font-weight: 600;
         }
-        td:first-child {
+        .status {
+          width: 74px;
           white-space: nowrap;
-          width: 72px;
         }
-        td:nth-child(2) {
+        .time {
+          width: 108px;
           white-space: nowrap;
-          width: 120px;
+        }
+        .action {
+          width: auto;
+          white-space: normal;
+          word-break: keep-all;
+          line-height: 1.45;
         }
         .current td {
           background: rgba(var(--rgb-primary-color), 0.08);
