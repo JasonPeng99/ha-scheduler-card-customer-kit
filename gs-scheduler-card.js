@@ -2099,7 +2099,7 @@ var se,ae;class oe extends f{constructor(){super(...arguments),this.renderOption
 
         <div slot="content">
 
-          ${n.target?q`
+          ${(n.target||!["script","notify"].includes(r))?q`
           <gs-scheduler-settings-row>
             <span slot="heading">設備</span>
             <gs-scheduler-entity-picker
@@ -2110,7 +2110,7 @@ var se,ae;class oe extends f{constructor(){super(...arguments),this.renderOption
               @value-changed=${this._selectEntity}
               .value=${[(null===(s=o.target)||void 0===s?void 0:s.entity_id)||[]].flat()}
               ?multiple=${!0}
-              ?disabled=${d}
+              ?disabled=${!1}
             >
             </gs-scheduler-entity-picker>
           </gs-scheduler-settings-row>
