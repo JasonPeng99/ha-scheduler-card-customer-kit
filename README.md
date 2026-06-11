@@ -18,6 +18,8 @@ This repo contains a reusable Home Assistant frontend plugin derived from `sched
   - Rewrites internal custom element tags and card type to `gs-*`
 - `gs-scheduler-card.js`
   - Final HACS-installable frontend plugin bundle
+- `src_schedule_summary_card.js`
+  - Lightweight summary card source that renders timeslots/actions from one scheduler switch entity
 - `hacs.json`
   - HACS metadata for a standalone dashboard plugin
 - `examples/farm_schedule_template_sensors.yaml`
@@ -57,6 +59,14 @@ python scripts/utf8_replace.py <file> <old> <new>
 
 ```yaml
 type: custom:gs-scheduler-card
+```
+
+For the summary card:
+
+```yaml
+type: custom:gs-schedule-summary-card
+entity: switch.schedule_feng_shan_pai_cheng
+title: 風扇排程總攬
 ```
 
 By default, `GS Scheduler Card` opens the schedule editor in the simplified customer-facing mode.

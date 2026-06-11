@@ -1,0 +1,3 @@
+type: custom:gs-schedule-summary-card
+entity: switch.schedule_feng_shan_pai_cheng
+title: 風扇排程總攬

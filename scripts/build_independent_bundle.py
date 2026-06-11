@@ -6,6 +6,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "assets" / "scheduler-card.js"
 OUTPUT = ROOT / "gs-scheduler-card.js"
+SUMMARY_SOURCE = ROOT / "src_schedule_summary_card.js"
 
 
 REPLACEMENTS = [
@@ -43,6 +44,8 @@ def main() -> int:
     text = SOURCE.read_text(encoding="utf-8", errors="ignore")
     for old, new in REPLACEMENTS:
         text = text.replace(old, new)
+    if SUMMARY_SOURCE.exists():
+        text += "\n\n" + SUMMARY_SOURCE.read_text(encoding="utf-8", errors="ignore") + "\n"
     OUTPUT.write_text(text, encoding="utf-8", newline="\n")
     print(f"Wrote {OUTPUT}")
     return 0
