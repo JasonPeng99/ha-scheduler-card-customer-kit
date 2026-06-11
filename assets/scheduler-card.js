@@ -1949,7 +1949,7 @@ var se,ae;class oe extends f{constructor(){super(...arguments),this.renderOption
       </div>
 
       <div class="simple-slot-list">
-        ${e.slots.map((i,s)=>q`
+        ${e.slots.map((i,s)=>({slot:i,idx:s})).filter(({slot:s,idx:a})=>s.actions.length||a>0&&a<e.slots.length-1).map(({slot:i,idx:s})=>q`
           <button
             class="simple-slot-row ${this.selectedEntry===t&&this.selectedSlot===s?"selected":""}"
             @click=${()=>this._selectSlot(t,s)}
