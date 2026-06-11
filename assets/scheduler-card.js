@@ -444,7 +444,7 @@ var se,ae;class oe extends f{constructor(){super(...arguments),this.renderOption
         display: inline-flex;
         margin-bottom: 4px;
       }
-    `}};t([le({attribute:!1})],na.prototype,"hass",void 0),t([le({attribute:!1})],na.prototype,"items",void 0),t([le({attribute:!1})],na.prototype,"value",void 0),t([le({type:Boolean})],na.prototype,"selectable",void 0),t([le({type:Boolean})],na.prototype,"toggleable",void 0),t([le({type:Boolean})],na.prototype,"removable",void 0),t([le({type:Boolean})],na.prototype,"disabled",void 0),na=t([re("scheduler-chip-set")],na);const ra=[{name:"primary",weight:10},{name:"secondary",weight:8}];let da=class extends oe{constructor(){super(...arguments),this.value=[],this.multiple=!1,this.disabled=!1,this.multipleMode=!1,this.scheduleEntities=[],this._valueRenderer=e=>{Array.isArray(e)&&(e=e.length?[...e].pop():"");const t=e||"",i=this.hass.states[t];if(!i)return q`
+    `}};t([le({attribute:!1})],na.prototype,"hass",void 0),t([le({attribute:!1})],na.prototype,"items",void 0),t([le({attribute:!1})],na.prototype,"value",void 0),t([le({type:Boolean})],na.prototype,"selectable",void 0),t([le({type:Boolean})],na.prototype,"toggleable",void 0),t([le({type:Boolean})],na.prototype,"removable",void 0),t([le({type:Boolean})],na.prototype,"disabled",void 0),na=t([re("scheduler-chip-set")],na);const ra=[{name:"primary",weight:10},{name:"secondary",weight:8}];let da=class extends oe{constructor(){super(...arguments),this.value=[],this.multiple=!1,this.disabled=!1,this.multipleMode=!0,this.scheduleEntities=[],this._valueRenderer=e=>{Array.isArray(e)&&(e=e.length?[...e].pop():"");const t=e||"",i=this.hass.states[t];if(!i)return q`
         <ha-svg-icon
           slot="start"
           .path=${qs}
@@ -514,7 +514,7 @@ var se,ae;class oe extends f{constructor(){super(...arguments),this.renderOption
       </ha-generic-picker>
       `}
     `}renderChips(){if(!this.multiple)return V;let e=(this.value||[]).map(e=>{const t=this._parseEntityItem(e);return{name:t.primary,value:e,useStateIcon:!t.icon,icon:t.icon}});return q`
-      <div class="wrapper" @click=${()=>{if(!this.disabled&&this.multiple)this.multipleMode=!0}}>
+      <div class="wrapper">
       <scheduler-chip-set
         .hass=${this.hass}
         .items=${e}
@@ -1545,7 +1545,8 @@ var se,ae;class oe extends f{constructor(){super(...arguments),this.renderOption
       font-size: 36px;
     }
     ha-input {
-      width: 40px;
+      width: 54px;
+      --wa-form-control-value-font-size: 30px;
       --mdc-shape-small: 0;
       --text-field-appearance: none;
       --text-field-padding-top: 0;
@@ -1579,9 +1580,9 @@ var se,ae;class oe extends f{constructor(){super(...arguments),this.renderOption
       border-top-right-radius: var(--ha-border-radius-sm);
       border-top-left-radius: var(--ha-border-radius-sm);
     }
-    :host([large]) ha-input {
-      width: 75px;
-      --wa-form-control-value-font-size: 42px;
+     :host([large]) ha-input {
+      width: 88px;
+      --wa-form-control-value-font-size: 52px;
     }
     div.suffix {
       display: flex;
@@ -2090,8 +2091,11 @@ var se,ae;class oe extends f{constructor(){super(...arguments),this.renderOption
           <span>${Qi(c)}</span>
         </div>
 
-        <ha-dropdown
-          slot="contextMenu" .path=${Ns} @click=${e=>{e.stopPropagation(),this._showActionDialog(e)}}></ha-icon-button>
+        <ha-icon-button
+          slot="contextMenu"
+          .path=${Ns}
+          @click=${e=>{e.stopPropagation(),this._showActionDialog(e)}}
+        ></ha-icon-button>
 
         <div slot="content">
 
